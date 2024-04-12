@@ -19,14 +19,12 @@ app.use("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  if(!process.env.USER || !process.env.PASSWORD || !process.env.SSH_USER || !process.env.SSH_PASSWORD){
+  if(!process.env.USER || !process.env.PASSWORD){
     console.log("#".repeat(50));
     console.log("Nem találtam valamilyen fontos környezeti változót, valami baj van!");
     console.log("Hozz létre egy \".env\" fájlt a gyökérkönyvtárban, és add meg ezeket az adataidat benne:");
-    console.log("USER=\"C##NEPTUNKOD\"");
+    console.log("USER=\"felhasznalonev\"");
     console.log("PASSWORD=\"jelszoAmiSQLDevbenIsVan\"");
-    console.log("SSH_USER=\"h999999\"");
-    console.log("SSH_PASSWORD=\"jelszoAmivelCoospacereIsBelepsz\"");
     console.log("#".repeat(50));
     process.exit(1);
   }

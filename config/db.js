@@ -1,27 +1,4 @@
 const oracledb = require('oracledb');
-const sshtunnel = require('ssh-tunneling');
-
-const sshConfig = {
-    host: 'linux.inf.u-szeged.hu',
-    port: 22,
-    username: process.env.SSH_USER,
-    password: process.env.SSH_PASSWORD,
-}
-
-const client = new sshtunnel.SshTunnel(sshConfig);
-
-async function tryForward() {
-    client.forwardOut({
-        id: 'oracle',
-        proxy: "1521:orania2.inf.u-szeged.hu:1521"
-    }).catch((err) => {
-       console.log(err);
-    });
-}
-
-tryForward();
-
-
 
 try {
     oracledb.initOracleClient({ libDir: process.env.IC_PATH ? process.env.IC_PATH : "C:\\oracle\\instantclient_21_13" });
@@ -42,7 +19,7 @@ class Connection {
         this.connection = oracledb.getConnection({
             user          : process.env.USER,
             password      : process.env.PASSWORD, 
-            connectString : "tnsnames"
+            connectString : "localhost/xs"
         }).then((conn) => {
             console.log("Connected to Oracle Database");
             return conn;
@@ -53,7 +30,11 @@ class Connection {
 
     async execute(query) {
         return this.connection.then((conn) => {
-            return conn.execute(query);
+            return conn.execute(query).then((result) => {
+                return result;
+            }).catch((err) => {
+                console.log(err);
+            })
         }).catch((err) => {
             console.log(err);
         });

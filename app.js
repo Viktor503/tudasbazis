@@ -1,11 +1,45 @@
 const express = require('express')
-const app = express()
-const port = 3000
+const app = express();
+const port = 3000;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const fs = require('fs');
+
+app.set("view engine", "ejs");
+
+app.use("/css", express.static(__dirname + "public/css"));
+app.use("/scripts", express.static(__dirname + "public/scripts"));
+app.use("/img", express.static(__dirname + "public/img"));
+
+const indexRouter = require("./routes/index");
+
+app.use("/", indexRouter);
+
+app.use("*", (req, res) => {
+  res.status(404).send("404 Not Found");
+});
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  if(!process.env.USER || !process.env.PASSWORD){
+    console.log("#".repeat(50));
+    console.log("Nem találtam valamilyen fontos környezeti változót, valami baj van!");
+    console.log("Hozz létre egy \".env\" fájlt a gyökérkönyvtárban, és add meg ezeket az adataidat benne:");
+    console.log("USER=\"felhasznalonev\"");
+    console.log("PASSWORD=\"jelszoAmiSQLDevbenIsVan\"");
+    console.log("#".repeat(50));
+    process.exit(1);
+  }
+  fs.access(process.env.IC_PATH ? process.env.IC_PATH : "C:\\oracle\\instantclient_21_13", (err) => {
+    if(err){
+      console.log("#".repeat(50));
+      console.log("Nem találtam az Oracle Instant Client-et!");
+      console.log("Töltsd le innen: https://download.oracle.com/otn_software/nt/instantclient/instantclient-basic-windows.zip");
+      console.log("Vagy a C:\\oracle\\instantclient_21_13 mappába csomagold ki a letöltött fájlt,");
+      console.log("vagy add meg a .env fájlban az IC_PATH változó értékét, ami a kicsomagolt mappára mutat.")
+      console.log("Escapeld a backslasht! (\\ -> \\\\)!")
+      console.log("(Például: IC_PATH=\"C:\\\\instantclient_21_13\")");
+      console.log("#".repeat(50));
+      process.exit(1);
+    }
+  });
+  console.log(`A tudásbázis itt fut: http://localhost:${port}`)
 })

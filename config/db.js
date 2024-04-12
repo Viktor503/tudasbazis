@@ -32,8 +32,6 @@ class Connection {
         return this.connection.execute(query);
     }
 
-    //async selectFirst(what, from)
-
     async close() {
         await this.connection.close();
     }

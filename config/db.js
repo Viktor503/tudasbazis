@@ -16,32 +16,26 @@ try {
 
 class Connection {
     constructor() {
-        this.connection = oracledb.getConnection({
+        oracledb.getConnection({
             user          : process.env.USER,
             password      : process.env.PASSWORD, 
-            connectString : "localhost/xs"
+            connectString : "localhost/XEPDB1"
         }).then((conn) => {
             console.log("Connected to Oracle Database");
-            return conn;
+            this.connection = conn;
         }).catch((err) => {
             console.log(err);
         });
     }
 
     async execute(query) {
-        return this.connection.then((conn) => {
-            return conn.execute(query).then((result) => {
-                return result;
-            }).catch((err) => {
-                console.log(err);
-            })
-        }).catch((err) => {
-            console.log(err);
-        });
+        return this.connection.execute(query);
     }
 
+    //async selectFirst(what, from)
+
     async close() {
-        return this.connection.close();
+        await this.connection.close();
     }
 }
 

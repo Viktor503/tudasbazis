@@ -30,7 +30,7 @@ class Connection {
                 connection = await oracledb.getConnection({
                     user          : process.env.USER,
                     password      : process.env.PASSWORD, 
-                    connectString : "localhost/XEPDB1"
+                    connectString : "localhost/xe"
                 });
                 console.log("Connected to Oracle Database");
             } catch (err) {

@@ -15,21 +15,54 @@ try {
 }
 
 class Connection {
-    constructor() {
-        oracledb.getConnection({
-            user          : process.env.USER,
-            password      : process.env.PASSWORD, 
-            connectString : "localhost/XEPDB1"
-        }).then((conn) => {
-            console.log("Connected to Oracle Database");
-            this.connection = conn;
-        }).catch((err) => {
-            console.log(err);
-        });
+    constructor(connection) {
+        this.connection = connection
+        oracledb.autoCommit = true;
+        oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
+    }
+
+    static instance = null;
+
+    static async create() {
+        if (!this.instance) {
+            let connection;
+            try {
+                connection = await oracledb.getConnection({
+                    user          : process.env.USER,
+                    password      : process.env.PASSWORD, 
+                    connectString : "localhost/XEPDB1"
+                });
+                console.log("Connected to Oracle Database");
+            } catch (err) {
+                console.log(err);
+            }
+            this.instance = new Connection(connection);
+        }
+        return this.instance;
     }
 
     async execute(query) {
         return this.connection.execute(query);
+    }
+
+    async selectOne(query) {
+        try {
+            const result = await this.execute(query);
+            console.log(result.rows[0]);
+            return result.rows[0];
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
+    async selectAll(query) {
+        try {
+            const result = await this.execute(query);
+            console.log(result.rows);
+            return result.rows;
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     async close() {

@@ -3,12 +3,19 @@ const app = express();
 const port = 3000;
 
 const fs = require('fs');
+const Connection = require('./config/db');
 
 app.set("view engine", "ejs");
 
 app.use("/css", express.static(__dirname + "public/css"));
 app.use("/scripts", express.static(__dirname + "public/scripts"));
 app.use("/img", express.static(__dirname + "public/img"));
+
+app.use(async (req, res, next) => {
+  const conn = await Connection.create();
+  req.conn = conn;
+  next();
+})
 
 const indexRouter = require("./routes/index");
 

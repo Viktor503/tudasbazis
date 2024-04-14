@@ -48,17 +48,17 @@ class Connection {
     async selectOne(query) {
         try {
             const result = await this.execute(query);
-            console.log(result.rows[0]);
+            //console.log(result.rows[0]);
             return result.rows[0];
         } catch (err) {
             console.log(err);
         }
     }
 
-    async selectAll(query) {
+    async selectAll(table) {
         try {
-            const result = await this.execute(query);
-            console.log(result.rows);
+            const result = await this.execute("SELECT * FROM " + table);
+            //console.log(result.rows);
             return result.rows;
         } catch (err) {
             console.log(err);

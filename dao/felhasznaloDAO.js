@@ -1,3 +1,5 @@
+const oracledb = require('oracledb');
+
 class FelhasznaloDAO{
     constructor(connection){
         this.connection = connection;
@@ -8,7 +10,11 @@ class FelhasznaloDAO{
     }
 
     async getByAzon(azon){
-        return await this.connection.selectOne(`SELECT * FROM felhasznalo WHERE azon = ${azon}`);
+        return await this.connection.selectOne(`SELECT * FROM felhasznalo WHERE azon = :azon`, {azon: {val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER}});
+    }
+
+    async getByNev(nev){
+        return await this.connection.selectOne(`SELECT * FROM felhasznalo WHERE nev = :nev`, {nev: {val: String(nev), dir: oracledb.BIND_IN, type: oracledb.STRING}});
     }
 }
 

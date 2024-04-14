@@ -4,14 +4,12 @@ const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 
 router.get('/', async (req, res) => {
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
-    const kiirni = await felhasznaloDAO.getAll();
-    kiirni.forEach(element => {
-        console.log(element.NEV);
-    });
-    const kiirni2 = await felhasznaloDAO.getByAzon(1);
-    console.log(kiirni2);
     let adat;
-    res.render('index', {"title": "Kezdőoldal", adat});
+    //adat = await felhasznaloDAO.getByAzon(1); //adat.NEV = janos.kovacs123
+    //adat = await felhasznaloDAO.getByNev("janos.kovacs123"); //adat.AZON = 1
+    //adat = await felhasznaloDAO.getByNev("nem OR 1=1") //ekkor lecrashel, ami egyenlőre jó
+    console.log(adat);
+    res.render('index', {"title": "Kezdőoldal", adat: adat});
 });
 
 module.exports = router; 

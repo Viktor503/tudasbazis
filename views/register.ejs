@@ -9,7 +9,7 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
     <div class="container">
-    <form>
+    <form method="post">
         <label for="username">Felhasználónév:</label>
         <br>
         <input type="text" id="username" name="username" required >
@@ -24,6 +24,9 @@
         <br>
         <button type="submit" class="bg-cyan-600">Regisztráció</button>
     </form>
+    <p><% if(typeof error !== 'undefined'){%></p>
+        <p><%= error %></p>
+    <p><%}%></p>
     </div>
 </body>
 </html>

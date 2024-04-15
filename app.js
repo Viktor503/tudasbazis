@@ -12,6 +12,9 @@ app.use("/css", express.static("./public/css"));
 app.use("/scripts", express.static("./public/scripts"));
 app.use("/img", express.static("./public/img"));
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(async (req, res, next) => {
   const conn = await Connection.create();

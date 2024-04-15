@@ -22,10 +22,7 @@ router.post('/', async (req, res) => {
         return res.render('register', {"title": "Regisztráció", "error": "Már létezik ilyen felhasználó!"});
     }
 
-
-    const salt = await bcrypt.genSalt();    
-    const hash = await bcrypt.hash(jelszo, salt);
-    await felhasznaloDAO.newUser([nev,hash]);
+    await felhasznaloDAO.insertFelhasznalo(nev,jelszo,0,null);
     res.redirect("/");
 });
 

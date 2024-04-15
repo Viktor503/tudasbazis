@@ -93,8 +93,9 @@ class Connection {
     }
 
     async createDatabase() {
-        const script = require('./createDB').script;
+        const script = require('./createDB');
         script.forEach(async element => {
+            console.log(element);
             await this.connection.execute(element);
         });
     }

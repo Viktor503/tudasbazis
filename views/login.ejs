@@ -20,6 +20,9 @@
         <br>
         <button type="submit">Bejelentkezés</button>
     </form>
+    <p><% if(typeof error !== 'undefined'){%></p>
+        <p class="bg-red-500"><%= error %></p>
+    <p><%}%></p>
     </div>
 </body>
 </html>

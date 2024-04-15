@@ -58,6 +58,10 @@ class FelhasznaloDAO {
     );
   }
 
+  async getLektorok() {
+    return await this.connection.returnMore(`SELECT * FROM felhasznalo WHERE lektorazon IS NOT NULL ORDER BY lektorazon DESC`);
+  }
+
   async insertFelhasznalo(nev, jelszo) {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(jelszo, salt);
@@ -87,6 +91,23 @@ class FelhasznaloDAO {
       }
     );
   }
-}
+
+  async updateFelhasznaloLektor(azon, lektorAzon) {
+    await this.connection.returnNone(
+      `UPDATE felhasznalo SET lektor_azon = :lektorAzon WHERE azon = :azon`,
+      {
+        azon: {
+          val: Number(azon),
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+        lektorAzon: {
+          val: Number(lektorAzon),
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+      });
+    }
+};
 
 module.exports = FelhasznaloDAO;

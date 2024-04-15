@@ -8,8 +8,21 @@
 </head>
 <body class="bg-indigo-500">
     <%- include('header') %>
-    <div>
-        <%= title %>
+    <div class="flex justify-center items-center p-6">
+        <div class="bg-gray-200 p-4 rounded-lg">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/cikkek'">
+                Cikkek
+            </button>
+            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/kulcsszavak'">
+                Kulcsszavak
+            </button>
+            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/lektorok'">
+                Lektorok
+            </button>
+            <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/nyelvek'">
+                Nyelvek
+            </button>
+        </div>
     </div>
 </body>
 </html>

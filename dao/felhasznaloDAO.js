@@ -38,7 +38,7 @@ class FelhasznaloDAO {
     }
 
     async getByNev(nev){
-        return await this.connection.selectOne(`SELECT * FROM felhasznalo WHERE nev = '${nev}'`);
+        return await this.connection.returnOne(`SELECT * FROM felhasznalo WHERE nev = '${nev}'`);
     }
 
     async newUser(values){

@@ -58,29 +58,19 @@ class FelhasznaloDAO {
     );
   }
 
-  async insertFelhasznalo(nev, jelszo, admin, lektorAzon) {
+  async insertFelhasznalo(nev, jelszo) {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(jelszo, salt);
 
     await this.connection.returnNone(
-      `INSERT INTO felhasznalo(nev, jelszo, admin, lektorAzon) VALUES (:nev, :hash, :admin, :lektorAzon)`,
+      `INSERT INTO felhasznalo(nev, jelszo) VALUES (:nev, :hash)`,
       {
         nev: { val: String(nev), dir: oracledb.BIND_IN, type: oracledb.STRING },
         hash: {
           val: String(hash),
           dir: oracledb.BIND_IN,
           type: oracledb.STRING,
-        },
-        admin: {
-          val: Number(admin),
-          dir: oracledb.BIND_IN,
-          type: oracledb.NUMBER,
-        },
-        lektorAzon: {
-          val: Number(lektorAzon),
-          dir: oracledb.BIND_IN,
-          type: oracledb.NUMBER,
-        },
+        }        
       }
     );
   }

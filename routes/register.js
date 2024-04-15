@@ -22,7 +22,7 @@ router.post('/', async (req, res) => {
         return res.render('register', {"title": "Regisztráció", "error": "Már létezik ilyen felhasználó!"});
     }
 
-    await felhasznaloDAO.insertFelhasznalo(nev,jelszo,0,null);
+    await felhasznaloDAO.insertFelhasznalo(nev,jelszo);
     res.redirect("/");
 });
 

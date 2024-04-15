@@ -2,6 +2,7 @@ const express = require('express');
 const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 const router = express.Router()
 const bcrypt = require("bcrypt");
+const {getnev,generateToken} = require('../config/auth');
 
 router.get('/', async (req, res) => {
     res.render('login', {"title": "Bejelentkezés"});
@@ -17,9 +18,8 @@ router.post("/",async (req, res) => {
     if (user) {
         const match = await bcrypt.compare(jelszo, user.JELSZO);
         if (match) {
-            const token = generateToken({nev: user.nev, admin: user.admin});
+            const token = generateToken({azon: user.AZON,nev: user.NEV, admin: user.ADMIN});
             res.cookie('auth_token', token);
-            
             return res.redirect('/');
         }else{
             res.render('login', {"title": "Bejelentkezés",error: "Hibás jelszó" })

@@ -12,6 +12,8 @@ app.use("/scripts", express.static("./public/scripts"));
 app.use("/img", express.static("./public/img"));
 
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

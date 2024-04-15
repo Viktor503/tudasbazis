@@ -41,13 +41,9 @@ class Connection {
         return this.instance;
     }
 
-    async execute(query) {
-        return this.connection.execute(query);
-    }
-
-    async selectOne(query) {
+    async selectOne(query, binds = {}) {
         try {
-            const result = await this.execute(query);
+            const result = await this.connection.execute(query, binds);
             //console.log(result.rows[0]);
             return result.rows[0];
         } catch (err) {
@@ -57,7 +53,7 @@ class Connection {
 
     async selectAll(table) {
         try {
-            const result = await this.execute("SELECT * FROM " + table);
+            const result = await this.connection.execute("SELECT * FROM " + table);
             //console.log(result.rows);
             return result.rows;
         } catch (err) {

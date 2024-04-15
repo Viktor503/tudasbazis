@@ -97,6 +97,7 @@ class Connection {
         } catch (err) {
             console.log(err);
         }
+    }
 
     async close() {
         await this.connection.close();

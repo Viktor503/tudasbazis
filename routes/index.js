@@ -4,6 +4,7 @@ const cikkDAO = require('../dao/cikkDAO');
 const kulcsszoDAO = require('../dao/kulcsszoDAO');
 const lektorDAO = require('../dao/lektorDAO');
 const nyelvDAO = require('../dao/nyelvDAO');
+const hibajelentesDAO = require('../dao/hibajelentesDAO');
 
 router.get('/', async (req, res) => {
     res.render('index', {"title": "Kezdőoldal"});
@@ -31,6 +32,12 @@ router.get('/nyelvek', async (req, res) => {
     const nyelv = new nyelvDAO(req.conn);
     const nyelvek = await nyelv.getAll();
     res.render('list', {"title": "Nyelvek", data : nyelvek});
+});
+
+router.get('/hibajelentesek', async (req, res) => {
+    const hibajelentes = new hibajelentesDAO(req.conn);
+    const hibajelentesek = await hibajelentes.getAll();
+    res.render('list', {"title": "Hibajelentések", data : hibajelentesek});
 });
 
 module.exports = router; 

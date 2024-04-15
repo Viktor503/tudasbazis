@@ -97,16 +97,6 @@ class FelhasznaloDAO {
       }
     );
   }
-
-  async newUser(values) {
-    values = "'" + values[0] + "','" + values[1] + "'";
-    const columns = "nev" + "," + "jelszo";
-    return await this.connection.insertWithColumns(
-      "felhasznalo",
-      columns,
-      values
-    );
-  }
 }
 
 module.exports = FelhasznaloDAO;

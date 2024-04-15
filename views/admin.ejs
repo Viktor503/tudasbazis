@@ -11,7 +11,10 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
         <div class="flex justify-center items-center p-6">
+            
             <div class="bg-gray-200 p-4 rounded-lg">
+                <h1 class="flex justify-center items-center text-2xl">See data</h1>
+                <br>
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/cikkek'">
                     Cikkek
                 </button>
@@ -28,6 +31,33 @@
                     Nyelvek
                 </button>
                 <button class="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/hibajelentesek'">
+                    Hibajelentések
+                </button>
+                <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/reset'">
+                    ResetDb
+                </button>
+            </div>
+        </div>
+        <div class="flex justify-center items-center p-6">
+            <div class="bg-gray-200 p-4 rounded-lg">
+                <h1 class="flex justify-center items-center text-2xl">Edit data</h1>
+                <br>
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/cikkeke'">
+                    Cikkek
+                </button>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/felhasznaloke'">
+                    Felhasználók
+                </button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/kulcsszavake'">
+                    Kulcsszavak
+                </button>
+                <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/lektoroke'">
+                    Lektorok
+                </button>
+                <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/nyelveke'">
+                    Nyelvek
+                </button>
+                <button class="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/hibajelenteseke'">
                     Hibajelentések
                 </button>
                 <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/reset'">

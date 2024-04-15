@@ -21,8 +21,7 @@ router.get('/uj', async (req, res) => {
 
 router.post('/uj', async (req, res) => {
     const cikk = new cikkDAO(req.conn);
-    let valasz = await cikk.insertCikk(req.body.cim, req.user.azon, null, 0, 0, req.body.szoveg);
-    console.log(valasz);
+    await cikk.insertCikk(req.body.cim, req.user.azon, req.body.szoveg);
     res.redirect("/cikkek");
 });
 

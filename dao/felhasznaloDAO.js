@@ -7,7 +7,7 @@ class FelhasznaloDAO {
     }
 
     async getAll() {
-        return await this.connection.returnAll("felhasznalo");
+        return await this.connection.returnMore(`SELECT * FROM felhasznalo`);
     }
 
     async getByAzon(azon) {
@@ -35,10 +35,6 @@ class FelhasznaloDAO {
 
     async deleteFelhasznalo(azon) {
         await this.connection.returnNone(`DELETE FROM felhasznalo WHERE azon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
-    }
-
-    async getByNev(nev){
-        return await this.connection.returnOne(`SELECT * FROM felhasznalo WHERE nev = '${nev}'`);
     }
 
     async newUser(values){

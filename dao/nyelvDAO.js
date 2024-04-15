@@ -6,7 +6,7 @@ class NyelvDAO {
     }
 
     async getAll() {
-        return await this.connection.returnAll("nyelv");
+        return await this.connection.returnMore(`SELECT * FROM nyelv`);
     }
 
     async getByAzon(azon) {

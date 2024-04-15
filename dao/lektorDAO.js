@@ -6,7 +6,7 @@ class LektorDAO{
     }
 
     async getAll(){
-        return await this.connection.returnAll("lektor");
+        return await this.connection.returnMore(`SELECT * FROM lektor`);
     }
 
     async getByAzon(azon){

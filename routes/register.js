@@ -3,6 +3,7 @@ const router = express.Router()
 const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 
 const bcrypt = require("bcrypt");
+const { render } = require('ejs');
 
 router.get('/', async (req, res) => {
     res.render('register', {"title": "Regisztráció",user: req.user});
@@ -23,7 +24,8 @@ router.post('/', async (req, res) => {
     }
 
     await felhasznaloDAO.insertFelhasznalo(nev,jelszo);
-    res.redirect("/",{user: req.user});
+    res.redirect('login');
+    
 });
 
 module.exports = router; 

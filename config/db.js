@@ -103,6 +103,13 @@ class Connection {
     async close() {
         await this.connection.close();
     }
+
+    async createDatabase() {
+        const script = require('./createDB').script;
+        script.forEach(async element => {
+            await this.connection.execute(element);
+        });
+    }
 }
 
 module.exports = Connection;

@@ -75,10 +75,28 @@ class Connection {
         try {
             const result = await this.connection.execute(query, binds);
             //console.log(result.rows[0]);
+            } catch (err) {
+              console.log(err);
+        }
+    }
+
+    async insert(table, values) {
+        try {
+            const result = await this.execute(`INSERT INTO ${table} VALUES (${values});`);
+            return result;
         } catch (err) {
             console.log(err);
         }
     }
+
+    async insertWithColumns(table, columns, values){
+        try {
+            console.log(`INSERT INTO ${table} (${columns}) VALUES (${values});`)
+            const result = await this.execute(`INSERT INTO ${table} (${columns}) VALUES (${values})`);
+            return result;
+        } catch (err) {
+            console.log(err);
+        }
 
     async close() {
         await this.connection.close();

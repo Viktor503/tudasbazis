@@ -36,6 +36,16 @@ class FelhasznaloDAO {
     async deleteFelhasznalo(azon) {
         await this.connection.returnNone(`DELETE FROM felhasznalo WHERE azon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
     }
+
+    async getByNev(nev){
+        return await this.connection.selectOne(`SELECT * FROM felhasznalo WHERE nev = '${nev}'`);
+    }
+
+    async newUser(values){
+        values = "\'"+values[0]+"\',\'"+values[1]+"\'";
+        const columns = "nev"+","+"jelszo";
+        return await this.connection.insertWithColumns("felhasznalo", columns, values);
+    }
 }
 
 module.exports = FelhasznaloDAO;

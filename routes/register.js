@@ -5,7 +5,7 @@ const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 const bcrypt = require("bcrypt");
 
 router.get('/', async (req, res) => {
-    res.render('register', {"title": "Regisztráció"});
+    res.render('register', {"title": "Regisztráció",user: req.user});
 });
 
 router.post('/', async (req, res) => {
@@ -15,15 +15,15 @@ router.post('/', async (req, res) => {
     const jelszo2 = req.body.password2;
 
     if(jelszo !== jelszo2){
-        return res.render('register', {"title": "Regisztráció", "error": "A két jelszó nem egyezik meg!"});
+        return res.render('register', {"title": "Regisztráció", "error": "A két jelszó nem egyezik meg!",user: req.user});
     }
     //ha létezik már ilyen felhasználó todo
     if(await felhasznaloDAO.getByNev(nev)){
-        return res.render('register', {"title": "Regisztráció", "error": "Már létezik ilyen felhasználó!"});
+        return res.render('register', {"title": "Regisztráció", "error": "Már létezik ilyen felhasználó!",user: req.user});
     }
 
     await felhasznaloDAO.insertFelhasznalo(nev,jelszo);
-    res.redirect("/");
+    res.redirect("/",{user: req.user});
 });
 
 module.exports = router; 

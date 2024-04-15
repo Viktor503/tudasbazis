@@ -7,7 +7,7 @@ const kulcsszoDAO = require('../dao/kulcsszoDAO');
 router.get('/', async (req, res) => {
     const cikk = new cikkDAO(req.conn);
     const cikkek = await cikk.getAll();
-    res.render('list', {"title": "Cikkek", data : cikkek});
+    res.render('list', {"title": "Cikkek", data : cikkek, user: req.user});
 });
 
 router.get('/uj', async (req, res) => {
@@ -16,7 +16,7 @@ router.get('/uj', async (req, res) => {
 
     const kulcsszo = new kulcsszoDAO(req.conn);
     const kulcsszavak = await kulcsszo.getAll();
-    res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak});
+    res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user});
 });
 
 router.post('/uj', async (req, res) => {
@@ -28,7 +28,7 @@ router.post('/uj', async (req, res) => {
 router.get('/:azon', async (req, res) => {
     const cikk = new cikkDAO(req.conn);
     const cikkAdat = await cikk.getByAzon(req.params.azon);
-    res.render('cikk', {"title": cikkAdat.CIM, data : cikkAdat});
+    res.render('cikk', {"title": cikkAdat.CIM, data : cikkAdat,user: req.user});
 });
 
 module.exports = router;

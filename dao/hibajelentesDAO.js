@@ -88,9 +88,9 @@ class HibajelentesDAO {
     );
   }
 
-  async insertHibabejelentes(bejelento, cikkAzon, aktiv, datum, tartalom) {
+  async insertHibabejelentes(bejelento, cikkAzon, datum, tartalom) {
     await this.connection.returnNone(
-      `INSERT INTO hibajelentes (bejelento, cikkAzon, aktiv, datum, tartalom) VALUES (:bejelento, :cikkAzon, :aktiv, :datum, :tartalom)`,
+      `INSERT INTO hibajelentes (bejelento, cikkAzon, datum, tartalom) VALUES (:bejelento, :cikkAzon, to_timestamp(:datum), to_clob(:tartalom))`,
       {
         bejelento: {
           val: Number(bejelento),
@@ -102,21 +102,16 @@ class HibajelentesDAO {
           dir: oracledb.BIND_IN,
           type: oracledb.NUMBER
         },
-        aktiv: {
-          val: Number(aktiv),
-          dir: oracledb.BIND_IN,
-          type: oracledb.NUMBER
-        },
         datum: {
-          val: Date(datum).getTime(),
+          val: datum,
           dir: oracledb.BIND_IN,
-          type: oracledb.DB_TYPE_TIMESTAMP
+          type: oracledb.DATE
         },
         tartalom: {
           val: String(tartalom),
           dir: oracledb.BIND_IN,
-          type: oracledb.CLOB
-        }
+          type: oracledb.STRING,
+      },
       }
     );
   }

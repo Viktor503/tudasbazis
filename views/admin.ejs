@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+
+<body class="bg-indigo-500">
+    <%- include('header') %>
+        <div class="flex justify-center items-center p-6">
+            <div class="bg-gray-200 p-4 rounded-lg">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/cikkek'">
+                    Cikkek
+                </button>
+                <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/felhasznalok'">
+                    Felhasználók
+                </button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/kulcsszavak'">
+                    Kulcsszavak
+                </button>
+                <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/lektorok'">
+                    Lektorok
+                </button>
+                <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/nyelvek'">
+                    Nyelvek
+                </button>
+            </div>
+        </div>
+</body>
+
+</html>

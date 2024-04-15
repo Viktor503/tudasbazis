@@ -7,7 +7,6 @@ const Connection = require('./config/db');
 
 app.set("view engine", "ejs");
 
-
 app.use("/css", express.static("./public/css"));
 app.use("/scripts", express.static("./public/scripts"));
 app.use("/img", express.static("./public/img"));
@@ -25,13 +24,12 @@ app.use(async (req, res, next) => {
 const indexRouter = require("./routes/index");
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
+const adminRouter = require("./routes/admin");
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
-app.use("/", indexRouter);
 app.use("/register", registerRouter);
-
-
+app.use("/admin", adminRouter);
 
 app.use("*", (req, res) => {
   res.status(404).send("404 Not Found");

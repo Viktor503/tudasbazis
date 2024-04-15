@@ -19,6 +19,7 @@ class Connection {
         this.connection = connection
         oracledb.autoCommit = true;
         oracledb.outFormat = oracledb.OUT_FORMAT_OBJECT;
+        oracledb.fetchAsString = [ oracledb.CLOB ];
     }
 
     static instance = null;
@@ -44,7 +45,6 @@ class Connection {
     async returnOne(query, binds = {}) {
         try {
             const result = await this.connection.execute(query, binds);
-            //console.log(result.rows[0]);
             return result.rows[0];
         } catch (err) {
             console.log(err);
@@ -54,17 +54,6 @@ class Connection {
     async returnMore(query, binds = {}) {
         try {
             const result = await this.connection.execute(query, binds);
-            //console.log(result.rows);
-            return result.rows;
-        } catch (err) {
-            console.log(err);
-        }
-    }
-
-    async returnAll(table) {
-        try {
-            const result = await this.connection.execute("SELECT * FROM " + table);
-            //console.log(result.rows);
             return result.rows;
         } catch (err) {
             console.log(err);
@@ -73,8 +62,7 @@ class Connection {
 
     async returnNone(query, binds = {}) {
         try {
-            const result = await this.connection.execute(query, binds);
-            //console.log(result.rows[0]);
+            await this.connection.execute(query, binds);
             } catch (err) {
               console.log(err);
         }

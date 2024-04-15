@@ -6,7 +6,7 @@ class KulcsszoDAO {
     }
 
     async getAll() {
-        return await this.connection.returnAll("kulcsszo");
+        return await this.connection.returnMore(`SELECT * FROM kulcsszo`);
     }
 
     async getByAzon(azon) {

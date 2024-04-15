@@ -50,5 +50,3 @@ const script = [
 "INSERT INTO hibajelentes (bejelento,cikkAzon,aktiv,datum,tartalom) values(5,5,1,TO_TIMESTAMP('2024/03/21 00:23:42', 'YYYY/MM/DD HH24:MI:SS'),to_clob('A gépi tanulás témájú cikkben néhány releváns példa hiányzik, ami olyan, mintha a gép elveszett volna a tanulás folyamatában. Kérem, adják hozzá ezeket a példákat a cikkhez. Köszönöm!') );",
 "INSERT INTO hibajelentes (bejelento,cikkAzon,aktiv,datum,tartalom) values(6,6,1,TO_TIMESTAMP('2024/03/21 16:43:02', 'YYYY/MM/DD HH24:MI:SS'),to_clob('A cikk a kiberbiztonságról néhány alapvető biztonsági intézkedést hagyott ki, ami olyan, mintha egy zárt ajtót hagytak volna nyitva az internetes fenyegetések előtt. Kérem, tegyék teljessé a cikket a megfelelő biztonsági tippekkel.') )",
 ];
-
-modules.exports = script;

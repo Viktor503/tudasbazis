@@ -11,12 +11,6 @@ router.get('/', (req, res) => {
     res.render('index', {"title": "Kezdőoldal", user: req.user});
 });
 
-router.get('/cikkek', async (req, res) => {
-    const cikk = new cikkDAO(req.conn);
-    const cikkek = await cikk.getAll();
-    res.render('list', {"title": "Cikkek", data : cikkek,user: req.user});
-});
-
 router.get('/kulcsszavak', async (req, res) => {
     const kulcsszo = new kulcsszoDAO(req.conn);
     const kulcsszavak = await kulcsszo.getAll();

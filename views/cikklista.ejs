@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+
+<body class="bg-indigo-500">
+    <%- include('header') %>
+    <div class="flex justify-center p-5 mx-auto my-0 w-4/5 rounded">
+        <% if(typeof cikkek !== 'undefined') { %>
+        <table class="table-auto">
+            <thead>
+                <tr>
+                    <th class="px-4 py-2 border bg-slate-600 text-white text-2xl">Cikkjeink</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (user) { %>
+                    <tr>
+                        <td class="px-4 py-2 border bg-green-500 hover:bg-green-700 text-green-100 cursor-pointer text-center text-2xl font-bold" onclick="location.href='/cikkek/uj'">
+                            <p>Új cikk</>
+                        </td>
+                    </tr>
+                <% } %>
+                
+                <% cikkek.forEach(cikk => { %>
+                <tr>
+                    <td class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center" onclick="location.href='/cikkek/<%=cikk.AZON%>'">
+                        <p><%=cikk.CIM%></>
+                    </td>
+                </tr>
+                <% }) %>
+                
+            </tbody>
+        </table>
+        <% } else { %>
+        <div class="text-2xl text-white">Nincs megjeleníthető adat!</div>
+        <% } %>
+    </div>
+</body>
+
+</html>

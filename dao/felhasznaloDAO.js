@@ -25,7 +25,7 @@ class FelhasznaloDAO {
 
   async getByNev(nev) {
     return await this.connection.returnMore(
-      `SELECT * FROM felhasznalo WHERE nev LIKE %:nev%`,
+      `SELECT * FROM felhasznalo WHERE nev LIKE :nev`,
       {
         nev: { val: String(nev), dir: oracledb.BIND_IN, type: oracledb.STRING },
       }

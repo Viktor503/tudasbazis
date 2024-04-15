@@ -40,4 +40,9 @@ router.get('/nyelvek', async (req, res) => {
     res.render('adminList', {"title": "Nyelvek", data : nyelvek});
 });
 
+router.get('/reset', async (req, res) => {
+    req.conn.createDatabase();
+    res.redirect("/admin");
+});
+
 module.exports = router;

@@ -11,12 +11,14 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
     <div class="flex justify-center p-5 mx-auto my-0 w-4/5 rounded">
+        <% if(typeof data[0] !== 'undefined') { %>
         <table class="table-auto">
             <thead>
                 <tr>
-                    <% Object.keys(data[0]).forEach(key => { %>
-                        <th class="px-4 py-2 border bg-slate-600 text-white"><%= key %></th>
-                    <% }) %>
+                    
+                        <% Object.keys(data[0]).forEach(key => { %>
+                            <th class="px-4 py-2 border bg-slate-600 text-white"><%= key %></th>
+                        <% }) %>
                 </tr>
             </thead>
             <tbody>
@@ -29,6 +31,9 @@
                 <% }) %>
             </tbody>
         </table>
+        <% } else { %>
+            <div class="text-2xl text-white">Nincs megjeleníthető adat!</div>
+        <% } %>
     </div>
 </body>
 

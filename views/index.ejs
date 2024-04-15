@@ -11,8 +11,10 @@
 
     <div>
         <%= title %>
-        <h1>Üdvözlünk az oldalon <%= user.nev %></h1>
-
+        <% if (user) { %>
+            <h1>Üdvözlünk az oldalon <%= user.nev %></h1>
+        <% } %>
+    
     <div class="flex justify-center items-center p-6">
         <div class="bg-gray-200 p-4 rounded-lg">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/cikkek'">

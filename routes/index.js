@@ -1,21 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
-const {verifyToken} = require('../config/auth');
-
 const cikkDAO = require('../dao/cikkDAO');
 const kulcsszoDAO = require('../dao/kulcsszoDAO');
 const lektorDAO = require('../dao/lektorDAO');
 const nyelvDAO = require('../dao/nyelvDAO');
 
-router.get('/', async (req, res) => {
-    var user = {};
-    verifyToken(req, res, () => {
-        if(req.user)
-            user = req.user;
-    });
-    console.log(user);
-    res.render('index', {"title": "Kezdőoldal", user: user});
+  
+router.get('/', (req, res) => {
+    res.render('index', {"title": "Kezdőoldal", user: req.user});
 });
 
 router.get('/cikkek', async (req, res) => {

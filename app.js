@@ -21,17 +21,23 @@ app.use(async (req, res, next) => {
   const conn = await Connection.create();
   req.conn = conn;
   next();
-})
+});
+
+const {verifyToken} = require('./config/auth');
+
+app.use(verifyToken);
 
 const indexRouter = require("./routes/index");
 const registerRouter = require("./routes/register");
 const loginRouter = require("./routes/login");
 const adminRouter = require("./routes/admin");
+const cikkekRouter = require("./routes/cikkek");
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
 app.use("/register", registerRouter);
 app.use("/admin", adminRouter);
+app.use("/cikkek", cikkekRouter);
 
 app.use("*", (req, res) => {
   res.status(404).send("404 Not Found");

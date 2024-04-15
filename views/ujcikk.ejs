@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+
+<body class="bg-indigo-500">
+    <%- include('header') %>
+    <p class="flex justify-center text-3xl font-bold p-3">Új cikk létrehozása</p>
+    <div class="bg-blue-300 rounded text-black p-5 justify-center flex">
+        <form action="/cikkek/uj" method="POST">
+            <label for="cim">Cím:</label><br>
+            <input type="text" id="cim" name="cim" class="rounded"><br>
+            <label for="szoveg">Tartalom:</label><br>
+            <textarea id="szoveg" name="szoveg" class="rounded"></textarea><br>
+            <label for="nyelv">Nyelv:</label><br>
+            <select id="nyelv" name="nyelv" class="rounded">
+                <% nyelvek.forEach(nyelv => { %>
+                <option value="<%= nyelv.AZON %>"><%= nyelv.NYELV %></option>
+                <% }) %>
+            </select><br>
+            <label for="kulcsszavak">Kulcsszavak:</label><br>
+            <select id="kulcsszavak" name="kulcsszavak" class="rounded" multiple>
+                <% kulcsszavak.forEach(kulcsszo => { %>
+                <option value="<%= kulcsszo.AZON %>"><%= kulcsszo.KULCSSZO %></option>
+                <% }) %>
+            </select><br>
+            <input type="submit" value="Mentés" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+        </form>
+    </div>
+</body>
+
+</html>

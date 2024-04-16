@@ -96,7 +96,11 @@ class Connection {
         const script = require('./createDB');
         script.forEach(async element => {
             console.log(element);
-            await this.connection.execute(element);
+            try {
+                await this.connection.execute(element);
+            } catch (error) {
+                console.log(error);
+            }
         });
     }
 }

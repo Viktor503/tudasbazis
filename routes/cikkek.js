@@ -3,6 +3,7 @@ const router = express.Router();
 const CikkDAO = require('../dao/cikkDAO');
 const nyelvDAO = require('../dao/nyelvDAO');
 const kulcsszoDAO = require('../dao/kulcsszoDAO');
+const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 
 router.get('/', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
@@ -28,11 +29,16 @@ router.post('/uj', async (req, res) => {
 router.get('/:azon', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const cikk = await cikkDAO.getByAzon(req.params.azon);
+    const felhasznaloDAO = new FelhasznaloDAO(req.conn);
+    let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
+    if (!szerzo) {
+        szerzo = "Ismeretlen";
+    }
     if (!cikk) {
         res.status(404).send("404 Not Found");
         return;
     }
-    res.render('cikk', {"title": cikk.CIM, cikk , user: req.user, edit: false   });
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: false });
 });
 
 router.delete('/:azon', async (req, res) => {

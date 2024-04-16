@@ -1,18 +1,23 @@
-<header class="bg-green-600">
-    <nav class="text-2xl">
-        <ul class="list-none">
-            <li class="inline-block bg-cyan-500 hover:bg-cyan-600"><a href="/">Főoldal</a></li>
-            
-            
-            <% if(typeof user != 'undefined') { %>
-                <% if (user.admin) { %>
-                    <li class="inline-block bg-cyan-500 hover:bg-cyan-600"><a href="/admin">Admin</a></li>
+<header class="bg-green-600 text-white shadow-md">
+    <div class="container mx-auto flex justify-between items-center p-5 h-full">
+        <div class="font-bold text-2xl">
+            <a href="/" class="hover:text-gray-300">Tudásbázis</a>
+        </div>
+        <nav class="flex items-center">
+            <ul class="flex space-x-4 items-center h-full">
+                <li><a href="/" class="px-2 py-1 hover:text-gray-300">Főoldal</a></li>
+                <li><a href="/cikkek" class="px-2 py-1 hover:text-gray-300">Cikkjeink</a></li>
+                <% if(typeof user != 'undefined') { %>
+                    <% if (user.admin) { %>
+                        <li><a href="/admin" class="px-2 py-1 hover:text-gray-300">Admin</a></li>
+                    <% } %>
+                    <li><a href="/cikkek/uj" class="px-2 py-1 hover:text-gray-300">Új cikk létrehozása</a></li>
+                    <li><a href="/login" class="px-2 py-1 hover:text-gray-300">Kijelentkezés</a></li>
+                <% } else { %>
+                    <li><a href="/login" class="px-2 py-1 hover:text-gray-300">Bejelentkezés</a></li>
+                    <li><a href="/register" class="px-2 py-1 hover:text-gray-300">Regisztráció</a></li>
                 <% } %>
-                <li class="inline-block bg-cyan-500 hover:bg-cyan-600"><a href="/login">Kijelentkezés</a></li>
-            <% } else { %>
-                <li class="inline-block bg-cyan-500 hover:bg-cyan-600"><a href="/login">Bejelentkezés</a></li>
-                <li class="inline-block bg-cyan-500 hover:bg-cyan-600"><a href="/register">Regisztráció</a></li>
-            <% } %>
-        </ul>
-    </nav>
+            </ul>
+        </nav>
+    </div>
 </header>

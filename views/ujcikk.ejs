@@ -10,27 +10,49 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
-    <p class="flex justify-center text-3xl font-bold p-3">Új cikk létrehozása</p>
-    <div class="bg-blue-300 rounded text-black p-5 justify-center flex">
-        <form action="/cikkek/uj" method="POST">
-            <label for="cim">Cím:</label><br>
-            <input type="text" id="cim" name="cim" class="rounded"><br>
-            <label for="szoveg">Tartalom:</label><br>
-            <textarea id="szoveg" name="szoveg" class="rounded"></textarea><br>
-            <label for="nyelv">Nyelv:</label><br>
-            <select id="nyelv" name="nyelv" class="rounded">
-                <% nyelvek.forEach(nyelv => { %>
-                <option value="<%= nyelv.AZON %>"><%= nyelv.NYELV %></option>
-                <% }) %>
-            </select><br>
-            <label for="kulcsszavak">Kulcsszavak:</label><br>
-            <select id="kulcsszavak" name="kulcsszavak" class="rounded" multiple>
-                <% kulcsszavak.forEach(kulcsszo => { %>
-                <option value="<%= kulcsszo.AZON %>"><%= kulcsszo.KULCSSZO %></option>
-                <% }) %>
-            </select><br>
-            <input type="submit" value="Mentés" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        </form>
+    <div class="flex items-center justify-center pt-10">
+        <div class="w-full max-w-2xl mx-auto">
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <p class="text-center text-3xl font-bold p-3">Új cikk létrehozása</p>
+                <form action="/cikkek/uj" method="POST">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="cim">
+                            Cím:
+                        </label>
+                        <input type="text" id="cim" name="cim" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="szoveg">
+                            Tartalom:
+                        </label>
+                        <textarea id="szoveg" name="szoveg" class="shadow appearance-none border rounded w-full h-32 min-h-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="nyelv">
+                            Nyelv:
+                        </label>
+                        <select id="nyelv" name="nyelv" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <% nyelvek.forEach(nyelv => { %>
+                            <option value="<%= nyelv.AZON %>"><%= nyelv.NYELV %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="kulcsszavak">
+                            Kulcsszavak:
+                        </label>
+                        <select id="kulcsszavak" name="kulcsszavak" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" multiple>
+                            <% kulcsszavak.forEach(kulcsszo => { %>
+                            <option value="<%= kulcsszo.AZON %>"><%= kulcsszo.KULCSSZO %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <input type="submit" value="Beküldés" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 

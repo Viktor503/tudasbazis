@@ -5,12 +5,25 @@ const cikkDAO = require('../dao/cikkDAO');
 const router = express.Router();
   
 router.get('/', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const lektorok = new lektorDAO(req.conn);
-    const lektor = await lektorok.getByAzon(req.user.lektorAzon);
+
+    let lektor;
+
+    if(req.user.lektorAzon){
+        lektor = await lektorok.getByAzon(req.user.lektorAzon);
+    }
     res.render('fiokom', {"title": req.user.nev + " adatai", user: req.user, lektor, "error": null});
 });
 
 router.post('/updateFelhasznalo', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const felhasznalok = new felhasznaloDAO(req.conn);
     const regiFelhasznalo = await felhasznalok.getByAzon(req.user.azon);
     if (req.body.jelszo !== req.body.jelszo2) {
@@ -24,6 +37,10 @@ router.post('/updateFelhasznalo', async (req, res) => {
 });
 
 router.post('/updateLektor', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const lektorok = new lektorDAO(req.conn);
     const regiLektor = await lektorok.getByAzon(req.user.lektorAzon);
     if (req.body.fokozat && req.body.intezet && req.body.szakterulet) {
@@ -33,6 +50,10 @@ router.post('/updateLektor', async (req, res) => {
 });
 
 router.post('/cikkek/update/:azon', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const cikkek = new cikkDAO(req.conn);
     const regiCikk = await cikkek.getByAzon(req.params.azon);
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {

@@ -36,6 +36,28 @@ router.get('/cikkek/:azon', async (req, res) => {
     res.render('cikk', {"title": cikk.CIM, cikk ,user: req.user});
 });
 
+router.get('/cikkeke/:azon', async (req, res) => {
+    const cikkek = new cikkDAO(req.conn);
+    const cikk = await cikkek.getByAzon(req.params.azon);
+    if (!cikk) {
+        res.status(404).send("404 Not Found");
+        return;
+    }
+    res.render('cikk', {"title": cikk.CIM, cikk ,user: req.user, edit: true});
+});
+
+router.post('/cikkek/update/:azon', async (req, res) => {
+    const cikkek = new cikkDAO(req.conn);
+    const regiCikk = await cikkek.getByAzon(req.params.azon);
+    if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
+        await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
+        // TODO: triggerrel növelni a módosítások számát
+        res.redirect("/admin/cikkeke");
+        return;
+    }
+    res.sendStatus(403);
+});
+
 router.get('/cikkeke', async (req, res) => {
     if (!req.user || !req.user.admin) {
         res.status(403).send('403 Forbidden');
@@ -43,8 +65,7 @@ router.get('/cikkeke', async (req, res) => {
     }
     const cikk = new cikkDAO(req.conn);
     const cikkek = await cikk.getAll();
-    console.log(cikkek);
-    res.render('list', {"title": "Cikkek", data : cikkek,user: req.user, edit: true, route: "/cikkeke/"});
+    res.render('list', {"title": "Cikkek", data : cikkek,user: req.user, edit: true, route: "/admin/cikkeke/"});
 });
 
 router.get('/felhasznalok', async (req, res) => {
@@ -64,7 +85,7 @@ router.get('/felhasznaloke', async (req, res) => {
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
     const felhasznalok = await felhasznalo.getAll();
-    res.render('list', {"title": "Felhasználók", data : felhasznalok,user: req.user, edit: true, route: "/felhasznaloke/"});
+    res.render('list', {"title": "Felhasználók", data : felhasznalok,user: req.user, edit: true, route: "/admin/felhasznaloke/"});
 });
 
 router.get('/kulcsszavak', async (req, res) => {
@@ -84,7 +105,7 @@ router.get('/kulcsszavake', async (req, res) => {
     }
     const kulcsszo = new kulcsszoDAO(req.conn);
     const kulcsszavak = await kulcsszo.getAll();
-    res.render('list', {"title": "Kulcsszavak", data : kulcsszavak,user: req.user, edit: true, route: "/kulcsszavake/"});
+    res.render('list', {"title": "Kulcsszavak", data : kulcsszavak,user: req.user, edit: true, route: "/admin/kulcsszavake/"});
 });
 
 router.get('/lektorok', async (req, res) => {
@@ -104,7 +125,7 @@ router.get('/lektoroke', async (req, res) => {
     }
     const lektor = new lektorDAO(req.conn);
     const lektorok = await lektor.getAll();
-    res.render('list', {"title": "Lektorok", data : lektorok,user: req.user,edit: true, route: "/lektoroke/"});
+    res.render('list', {"title": "Lektorok", data : lektorok,user: req.user,edit: true, route: "/admin/lektoroke/"});
 });
 
 router.get('/nyelvek', async (req, res) => {
@@ -124,7 +145,7 @@ router.get('/nyelveke', async (req, res) => {
     }
     const nyelv = new nyelvDAO(req.conn);
     const nyelvek = await nyelv.getAll();
-    res.render('list', {"title": "Nyelvek", data : nyelvek,user: req.user,edit: true, route: "/nyelveke/"});
+    res.render('list', {"title": "Nyelvek", data : nyelvek,user: req.user,edit: true, route: "/admin/nyelveke/"});
 });
 
 router.get('/hibajelentesek', async (req, res) => {
@@ -158,7 +179,7 @@ router.get('/hibajelenteseke', async (req, res) => {
     }
     const hibajelentes = new hibajelentesDAO(req.conn);
     const hibajelentesek = await hibajelentes.getAll();
-    res.render('list', {"title": "Hibabejelentések", data : hibajelentesek,user: req.user,edit: true, route: "/hibajelenteseke/"});
+    res.render('list', {"title": "Hibabejelentések", data : hibajelentesek,user: req.user,edit: true, route: "/admin/hibajelenteseke/"});
 });
 
 

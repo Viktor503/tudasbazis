@@ -7,7 +7,7 @@ const kulcsszoDAO = require('../dao/kulcsszoDAO');
 router.get('/', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const cikkek = await cikkDAO.getAll();
-    res.render('cikklista', {"title": "Cikkek", cikkek, user: req.user});
+    res.render('cikklista', {"title": "Cikkek", cikkek, user: req.user, edit: false});
 });
 
 router.get('/uj', async (req, res) => {
@@ -32,13 +32,13 @@ router.get('/:azon', async (req, res) => {
         res.status(404).send("404 Not Found");
         return;
     }
-    res.render('cikk', {"title": cikk.CIM, cikk , user: req.user});
+    res.render('cikk', {"title": cikk.CIM, cikk , user: req.user, edit: false   });
 });
 
 router.delete('/:azon', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const torolni = await cikkDAO.getByAzon(req.params.azon);
-    if (torolni !== undefined && req.user && (req.user.azon === torolni.SZERZOAZON || req.user.admin === 1)) {
+    if (torolni !== undefined && req.user && (req.user.azon === torolni.SZERZOAZON || req.user.admin)) {
         await cikkDAO.deleteCikk(req.params.azon);
         res.sendStatus(200);
         return;

@@ -33,17 +33,25 @@ router.get('/cikkek/:azon', async (req, res) => {
         res.status(404).send("404 Not Found");
         return;
     }
-    res.render('cikk', {"title": cikk.CIM, cikk ,user: req.user});
-});
+    if (!szerzo) {
+        szerzo = "Ismeretlen";
+    }
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true});
+}); 
 
 router.get('/cikkeke/:azon', async (req, res) => {
     const cikkek = new cikkDAO(req.conn);
+    const felhasznalok = new felhasznaloDAO(req.conn);
     const cikk = await cikkek.getByAzon(req.params.azon);
     if (!cikk) {
         res.status(404).send("404 Not Found");
         return;
     }
-    res.render('cikk', {"title": cikk.CIM, cikk ,user: req.user, edit: true});
+    let szerzo = (await felhasznalok.getByAzon(cikk?.SZERZOAZON))?.NEV;
+    if (!szerzo) {
+        szerzo = "Ismeretlen";
+    }
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true});
 });
 
 router.post('/cikkek/update/:azon', async (req, res) => {

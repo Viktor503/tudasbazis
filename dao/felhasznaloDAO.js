@@ -92,6 +92,27 @@ class FelhasznaloDAO {
     );
   }
 
+  async updateFelhasznalo(azon, jelszo) {
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(jelszo, salt);
+
+    await this.connection.returnNone(
+      `UPDATE felhasznalo SET jelszo = :hash WHERE azon = :azon`,
+      {
+        azon: {
+          val: Number(azon),
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+        hash: {
+          val: String(hash),
+          dir: oracledb.BIND_IN,
+          type: oracledb.STRING,
+        },
+      }
+    );
+  }
+
   async updateFelhasznaloLektor(azon, lektorAzon) {
     await this.connection.returnNone(
       `UPDATE felhasznalo SET lektorazon = :lektorAzon WHERE azon = :azon`,

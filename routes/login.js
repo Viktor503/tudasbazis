@@ -6,7 +6,7 @@ const {verifyToken,generateToken} = require('../config/auth');
 
 
 router.get('/', async (req, res) => {
-    let regsucc;
+    let regsucc = false;
     let user = {};
     verifyToken(req, res, () => {
         if(req.user)
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     if(req.query.regsucc){
         regsucc = true;
     }
-    res.render('login', {"title": "Bejelentkezés",user: req.user, regsucc});
+    res.render('login', {"title": "Bejelentkezés",user: req.user, regsucc: regsucc});
 });
 
 
@@ -35,10 +35,10 @@ router.post("/",async (req, res) => {
             res.cookie('auth_token', token);
             return res.redirect('/');
         }else{
-            res.render('login', {"title": "Bejelentkezés",error: "Hibás jelszó" ,user: req.user})
+            res.render('login', {"title": "Bejelentkezés",error: "Hibás jelszó" ,user: req.user, regsucc: false})
         }
     }else{
-        res.render('login', {"title": "Bejelentkezés",error: "Hibás felhasználónév" ,user: req.user})
+        res.render('login', {"title": "Bejelentkezés",error: "Hibás felhasználónév" ,user: req.user, regsucc: false})
     }
 
 });

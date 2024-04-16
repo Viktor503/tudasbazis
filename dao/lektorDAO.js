@@ -29,6 +29,10 @@ class LektorDAO{
         await this.connection.returnNone(`INSERT INTO lektor (fokozat, intezet, szakterulet) VALUES (:fokozat, :intezet, :szakterulet)`, {fokozat: {val: String(fokozat), dir: oracledb.BIND_IN, type: oracledb.STRING}, intezet: {val: String(intezet), dir: oracledb.BIND_IN, type: oracledb.STRING}, szakterulet: {val: String(szakterulet), dir: oracledb.BIND_IN, type: oracledb.STRING}});
     }
 
+    async getLatestAzon(){
+        return await this.connection.returnOne(`SELECT MAX(azon) FROM lektor`);
+    }
+
     async deleteLektor(azon){
         await this.connection.returnNone(`DELETE FROM lektor WHERE azon = :azon`, {azon: {val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER}});
     }

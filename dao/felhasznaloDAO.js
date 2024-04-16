@@ -94,7 +94,7 @@ class FelhasznaloDAO {
 
   async updateFelhasznaloLektor(azon, lektorAzon) {
     await this.connection.returnNone(
-      `UPDATE felhasznalo SET lektor_azon = :lektorAzon WHERE azon = :azon`,
+      `UPDATE felhasznalo SET lektorazon = :lektorAzon WHERE azon = :azon`,
       {
         azon: {
           val: Number(azon),
@@ -102,7 +102,23 @@ class FelhasznaloDAO {
           type: oracledb.NUMBER,
         },
         lektorAzon: {
-          val: Number(lektorAzon),
+          val: lektorAzon?Number(lektorAzon):null,
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+      });
+    }
+  async updateFelhasznaloAdmin(azon, admin) {
+    await this.connection.returnNone(
+      `UPDATE felhasznalo SET admin = :admin WHERE azon = :azon`,
+      {
+        azon: {
+          val: Number(azon),
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+        admin: {
+          val: Number(admin),
           dir: oracledb.BIND_IN,
           type: oracledb.NUMBER,
         },

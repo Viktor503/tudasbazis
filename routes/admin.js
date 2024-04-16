@@ -25,6 +25,16 @@ router.get('/cikkek', async (req, res) => {
     res.render('list', {"title": "Cikkek", data : cikkek,user: req.user});
 });
 
+router.get('/cikkek/:azon', async (req, res) => {
+    const cikkek = new cikkDAO(req.conn);
+    const cikk = await cikkek.getByAzon(req.params.azon);
+    if (!cikk) {
+        res.status(404).send("404 Not Found");
+        return;
+    }
+    res.render('cikk', {"title": cikk.CIM, cikk ,user: req.user});
+});
+
 router.get('/felhasznalok', async (req, res) => {
     if (!req.user || !req.user.admin) {
         res.status(403).send('403 Forbidden');
@@ -72,7 +82,19 @@ router.get('/hibajelentesek', async (req, res) => {
     }
     const hibajelentes = new hibajelentesDAO(req.conn);
     const hibajelentesek = await hibajelentes.getAll();
-    res.render('list', {"title": "Hibabejelentések", data : hibajelentesek,user: req.user});
+    res.render('list', {"title": "Hibajelentések", data : hibajelentesek, user: req.user});
+});
+
+router.get('/hibajelentesek/:azon', async (req, res) => {
+    const hibajelentesek = new hibajelentesDAO(req.conn);
+    const cikkek = new cikkDAO(req.conn);
+    const hibajelentes = await hibajelentesek.getByAzon(req.params.azon);
+    const cikk = await cikkek.getByAzon(req.params.azon);
+    if (!hibajelentes) {
+        res.status(404).send("404 Not Found");
+        return;
+    }
+    res.render('hibajelentes', {"title": "Hibajelentés: " + cikk.CIM, hibajelentes, cikk, user: req.user});
 });
 
 router.get('/reset', async (req, res) => {

@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const cikkDAO = require('../dao/cikkDAO');
-const nyelvDAO = require('../dao/nyelvDAO');
-const kulcsszoDAO = require('../dao/kulcsszoDAO');
 const hibajelentesDAO = require('../dao/hibajelentesDAO');
 
 router.get('/', async (req, res) => {
@@ -27,13 +25,15 @@ router.post('/uj', async (req, res) => {
 });
 
 router.get('/:azon', async (req, res) => {
-    const hibajelentes = new hibajelentesDAO(req.conn);
+    const hibajelentesek = new hibajelentesDAO(req.conn);
+    const cikkek = new cikkDAO(req.conn);
+    const hibajelentes = await hibajelentesek.getByAzon(req.params.azon);
+    const cikk = await cikkek.getByAzon(req.params.azon);
     if (!hibajelentes) {
-        res.status(404).send('404 Not Found');
+        res.status(404).send("404 Not Found");
         return;
     }
-    const hibajelentesAdat = await hibajelentes.getByAzon(req.params.azon);
-    res.render('hibajelentes', {"title": hibajelentes.AZON, data : hibajelentesAdat, user: req.user});
+    res.render('hibajelentes', {"title": "Hibajelentés: " + cikk.CIM, hibajelentes, cikk, user: req.user});
 });
 
 module.exports = router;

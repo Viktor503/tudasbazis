@@ -88,7 +88,7 @@ class HibajelentesDAO {
     );
   }
 
-  async insertHibabejelentes(bejelento, cikkAzon, datum, tartalom) {
+  async insertHibajelentes(bejelento, cikkAzon, datum, tartalom) {
     await this.connection.returnNone(
       `INSERT INTO hibajelentes (bejelento, cikkAzon, datum, tartalom) VALUES (:bejelento, :cikkAzon, to_timestamp(:datum), to_clob(:tartalom))`,
       {

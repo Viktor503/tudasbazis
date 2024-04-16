@@ -10,8 +10,9 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
-    <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
+    <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
         <p class="text-5xl m-4"><%= cikk.CIM %></p>
+        <p class="text-2xl m-4 text-gray-700"><%= szerzo %></p>
         <% if (user !== undefined && (user.azon === cikk.SZERZOAZON || user.admin)) { %>
             <button class="bg-red-500 hover:bg-red-600 p-2 m-2 rounded" onclick="deleteCikk('<%= cikk.AZON %>')">Törlés</button>
         <% } %>

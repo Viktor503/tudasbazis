@@ -10,22 +10,22 @@ router.get('/', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    felhasznaloDAO = new FelhasznaloDAO(req.conn);
+    const felhasznaloDAO = new FelhasznaloDAO(req.conn);
     const nev = req.body.username;
     const jelszo = req.body.password;
     const jelszo2 = req.body.password2;
 
+    if(jelszo.length < 8){
+        return res.render('register', {"title": "Regisztráció", "error": "A jelszó túl rövid!",user: req.user});
+    }
     if(jelszo !== jelszo2){
         return res.render('register', {"title": "Regisztráció", "error": "A két jelszó nem egyezik meg!",user: req.user});
     }
-    //ha létezik már ilyen felhasználó todo
     if(await felhasznaloDAO.getByNev(nev)){
-        return res.render('register', {"title": "Regisztráció", "error": "Már létezik ilyen felhasználó!",user: req.user});
+        return res.render('register', {"title": "Regisztráció", "error": "A felhasználónév már foglalt!",user: req.user});
     }
-
     await felhasznaloDAO.insertFelhasznalo(nev,jelszo);
-    res.redirect('login');
-    
+    res.redirect('login?regsucc=true');
 });
 
 module.exports = router; 

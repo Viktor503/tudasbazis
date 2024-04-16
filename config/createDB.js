@@ -45,7 +45,7 @@ const script = [
 "INSERT INTO Lektor (fokozat, intezet, szakterulet) VALUES ('MSc', 'Pécsi Tudományegyetem', 'Néprajz')",
 "INSERT INTO Lektor (fokozat, intezet, szakterulet) VALUES ('PhD', 'Eötvös Loránd Tudományegyetem', 'Történelem')",
 
-
+"INSERT INTO Felhasznalo (nev, jelszo, admin, lektorAzon) VALUES ('admin', '$2b$10$slCM2fwVWQFlMWMdweKph.Gypi9.CkOY/pgvWm6deC0BQus4bXMFa', 1, NULL)",
 "INSERT INTO Felhasznalo (nev, jelszo, admin, lektorAzon) VALUES ('janos.kovacs123', '9d4e1e23bd5b727046a9e3b4b7db57bd8d6ee684', 1, NULL)",
 "INSERT INTO Felhasznalo (nev, jelszo, admin, lektorAzon) VALUES ('eszter.kiss567', '6eea9b7ef19179a06954ed7c73c8b3b8b6d004f8', 0, 1)",
 "INSERT INTO Felhasznalo (nev, jelszo, admin, lektorAzon) VALUES ('peter.nagy.789', '1e3b3258bfa358e6750bc59f794eb566045e8a28', 0, NULL)",

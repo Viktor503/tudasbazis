@@ -6,7 +6,8 @@ const {verifyToken,generateToken} = require('../config/auth');
 
 
 router.get('/', async (req, res) => {
-    user = {}
+    let regsucc;
+    let user = {};
     verifyToken(req, res, () => {
         if(req.user)
             user = req.user;
@@ -15,7 +16,10 @@ router.get('/', async (req, res) => {
         res.clearCookie('auth_token');
         return res.redirect('/');
     }
-    res.render('login', {"title": "Bejelentkezés",user: req.user});
+    if(req.query.regsucc){
+        regsucc = true;
+    }
+    res.render('login', {"title": "Bejelentkezés",user: req.user, regsucc});
 });
 
 

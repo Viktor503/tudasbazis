@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+
+<body class="bg-indigo-500">
+    <%- include('header') %>
+    <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
+        <p class="text-5xl m-4"><%= title %></p><br>
+        <p class="text-xl m-4"><%- hibajelentes.AKTIV ? "Hiba bejelentve: " + hibajelentes.DATUM : "A hibát már javították." %></p>
+    </div>
+    <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-red-400">
+        <p class="text-xl"><%= hibajelentes.TARTALOM %></p>
+    </div>
+    <div class="m-3 p-3 bg-white h-svh rounded">
+        <p class="text-xl"><%= cikk.TARTALOM %></p>
+    </div>
+</body>

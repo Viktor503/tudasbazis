@@ -22,6 +22,20 @@ router.get('/uj', async (req, res) => {
 
 router.post('/uj', async (req, res) => {
     const cikk = new CikkDAO(req.conn);
+    const nyelv = new nyelvDAO(req.conn);
+    const nyelvek = await nyelv.getAll();
+
+    const kulcsszo = new kulcsszoDAO(req.conn);
+    const kulcsszavak = await kulcsszo.getAll();
+    if(req.body.cim.length < 5){
+        res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "A címnek legalább 5 karakter hosszúnak kell lennie"});
+        return;     
+    }
+    if(req.body.szoveg.length < 20){
+        res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "A cikknek legalább 20 karakter hosszúnak kell lennie"});
+        return;
+    }
+
     await cikk.insertCikk(req.body.cim, req.user.azon, req.body.szoveg);
     res.redirect("/cikkek");
 });

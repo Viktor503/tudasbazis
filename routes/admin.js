@@ -96,6 +96,46 @@ router.get('/felhasznaloke', async (req, res) => {
     res.render('list', {"title": "Felhasználók", data : felhasznalok,user: req.user, edit: true, route: "/admin/felhasznaloke/"});
 });
 
+router.get('/felhasznaloke/:azon', async (req, res) => {
+    if (!req.user || !req.user.admin) {
+        res.status(403).send('403 Forbidden');
+        return;
+    }
+    const felhasznalo = new felhasznaloDAO(req.conn);
+    const felhasznalok = await felhasznalo.getAll();
+    user = await felhasznalo.getByAzon(req.params.azon);
+    res.render('register', {"title": "Felhasználók", edit: true, route: "/admin/felhasznaloke/", user: user});
+});
+
+router.post('/felhasznaloke/:azon', async (req, res) => {
+    azon = req.params.azon
+    var admin = 0;
+    var lektor = null;
+    if(req.body.admin){
+        admin = 1;
+    }
+    if(req.body.lektor){
+        lektor = 1;
+    }
+    f = new felhasznaloDAO(req.conn);
+    l = new lektorDAO(req.conn);
+    user = await f.getByAzon(azon);
+    if(user.LEKTORAZON == null){
+        if(lektor == 1){
+            await l.insertLektor(req.body.fokozat, req.body.intezmeny, req.body.szakterulet);
+            lektor = await l.getLatestAzon();
+            lektor = lektor['MAX(AZON)'];
+        }
+    }
+    
+    
+    await f.updateFelhasznaloLektor(azon, lektor);
+    
+    await f.updateFelhasznaloAdmin(azon, admin);
+
+    res.redirect("/admin");
+});
+
 router.get('/kulcsszavak', async (req, res) => {
     if (!req.user || !req.user.admin) {
         res.status(403).send('403 Forbidden');
@@ -197,6 +237,7 @@ router.get('/reset', async (req, res) => {
         return;
     }
     req.conn.createDatabase();
+    res.clearCookie('auth_token');
     res.redirect("/");
 });
 

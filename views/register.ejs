@@ -12,12 +12,13 @@
         <div class="w-full max-w-xs mx-auto">
             <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                 <form method="post">
+                    <% if(typeof edit == 'undefined'){%>
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
                             Felhasználónév:
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="username" name="username" type="text" required>
-                    </div>
+                    </div>    
                     <div class="mb-4">
                         <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
                             Jelszó:
@@ -30,9 +31,53 @@
                         </label>
                         <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="password2" name="password2" type="password" required>
                     </div>
+                    <% } else { %>
+                    <div class="mb-4">
+                        <p class="block text-gray-700 text-sm font-bold mb-2" for="username">Felhasználónév: <%= user.NEV%></p>
+                        
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lektor"> lektor:
+                            <input type="checkbox" id="lektor" name="lektor" <% if(user.LEKTORAZON != null){%> checked  <%}%>>
+                        </label>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="admin"> admin:
+                            <input type="checkbox" id="admin" name="admin" <% if(user.ADMIN == 1){%> checked <%}%>>
+                        </label>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="fokozat">
+                            Fokozat:
+                            <select id="fokozat" name="fokozat">
+                                <option value="Bsc">Bsc</option>
+                                <option value="Msc">Msc</option>
+                                <option value="Phd">Phd</option>
+                            </select>
+                        </label>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="intezmeny">
+                            Intézmény:
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="intezmeny" name="intezmeny" type="text">
+                        </label>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="szakterulet">
+                            Szakterület:
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="szakterulet" name="szakterulet" type="text">
+                        </label>
+                    </div>
+                    
+                    <% } %>
                     <div class="flex items-center justify-between">
                         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
-                            Regisztráció
+                            <% if(typeof edit == 'undefined'){%>
+                                Regisztráció
+                            <%} else {%>
+                                Módosítás
+                            <%}%>
                         </button>
                     </div>
                 </form>

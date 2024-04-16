@@ -11,7 +11,11 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
     <p class="flex justify-center text-3xl font-bold p-3">Új hiba bejelentése</p>
+    <% if(typeof error !== 'undefined'){%>
+        <p class="text-red-500 text-sm italic flex justify-center font-bold p-3"><%= error %></p>
+    <%}%>
     <div class="bg-blue-300 rounded text-black p-5 justify-center flex">
+        
         <form action="/hibajelentesek/uj" method="POST">
             <label for="cikk">Érintett cikk:</label><br>
             <select id="cikk" name="cikk" class="rounded">
@@ -23,6 +27,7 @@
             <textarea id="leiras" name="leiras" class="rounded"></textarea><br>
             <input type="submit" value="Mentés" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
         </form>
+        
     </div>
 </body>
 

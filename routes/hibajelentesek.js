@@ -20,6 +20,14 @@ router.get('/uj', async (req, res) => {
 
 router.post('/uj', async (req, res) => {
     const hibajelentes = new hibajelentesDAO(req.conn);
+    const hibajelentesek = await hibajelentes.getAll();
+
+    const cikk = new cikkDAO(req.conn);
+    const cikkek = await cikk.getAll();
+    if(req.body.leiras.length < 10){
+        res.render('ujhibajelentes', {"title": "Új hiba jelentése", hibajelentesek, cikkek, user: req.user, "error": "A leírásnak legalább 10 karakter hosszúnak kell lennie"});
+        return;     
+    }
     await hibajelentes.insertHibabejelentes(req.user.azon, Number(req.body.cikk), new Date(Date.now()), req.body.leiras);
     res.redirect("/hibajelentesek");
 });

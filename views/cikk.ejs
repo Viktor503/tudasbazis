@@ -35,8 +35,8 @@
     </div>
         
     </div>
-    <% if (!user && (user.azon === cikk.SZERZOAZON || user.admin)) { %>
-        <script>
+    <% if (user !== undefined && (user.azon === cikk.SZERZOAZON || user.admin)) { %>
+    <script>
         function deleteCikk(azon) {
             fetch('/cikkek/' + azon, {
                 method: 'DELETE',

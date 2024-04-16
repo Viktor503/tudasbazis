@@ -11,7 +11,7 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
     <div class="flex justify-center p-5 mx-auto my-0 w-4/5 rounded">
-        <% if(typeof data[0] !== 'undefined') { %>
+        <% if( typeof data != 'udefined' && typeof data[0] !== 'undefined') { %>
         <table class="table-auto">
             <thead>
                 <tr>
@@ -24,8 +24,12 @@
             <tbody>
                 <% data.forEach(item => { %>
                     <tr>
-                        <% Object.values(item).forEach(value => { %>
+                        <% Object.values(item).forEach((value,key,array) => { %>
                             <td class="border px-4 py-2 bg-white"><%= value %></td>
+                            <% if(typeof edit !== 'undefined' && Object.is(array.length - 1, key)){%>
+                                <td class="border px-4 py-2 bg-blue-600"><a href=<%=route+item['AZON']%>><button class="flex flex-grow bg-blue-400">Módosít</button></a></td>
+                            <% } %>
+                            
                         <% }) %>
                     </tr>
                 <% }) %>

@@ -20,20 +20,17 @@
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/cikkek'">
                 Cikkek
             </button>
-            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/kulcsszavak'">
-                Kulcsszavak
-            </button>
-            <button class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/lektorok'">
-                Lektorok
-            </button>
+            <% if (user) { %>
             <button class="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/hibajelentesek'">
                 Hibajelentések
             </button>
-            <button class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/nyelvek'">
-                Nyelvek
-            </button>
+            <% } %>
+            <% if (user !== undefined && user.admin) { %>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin'">
+                    Admin
+                </button>
+            <% } %>
         </div>
-
     </div>
 </body>
 </html>

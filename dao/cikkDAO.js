@@ -125,6 +125,21 @@ class CikkDAO {
             azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
         });
     }
+
+    async updateCikk(azon, cim, tartalom) {
+        await this.connection.returnNone(
+            `UPDATE cikk SET cim = :cim, tartalom = to_clob(:tartalom) WHERE azon = :azon`,
+            {
+                azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
+                cim: { val: String(cim), dir: oracledb.BIND_IN, type: oracledb.STRING },
+                tartalom: {
+                    val: String(tartalom),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.STRING,
+                },
+            }
+        );
+    }
 }
 
 module.exports = CikkDAO;

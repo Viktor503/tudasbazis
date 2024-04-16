@@ -10,19 +10,33 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
-    <p class="flex justify-center text-3xl font-bold p-3">Új hiba bejelentése</p>
-    <div class="bg-blue-300 rounded text-black p-5 justify-center flex">
-        <form action="/hibajelentesek/uj" method="POST">
-            <label for="cikk">Érintett cikk:</label><br>
-            <select id="cikk" name="cikk" class="rounded">
-                <% cikkek.forEach(cikk => { %>
-                <option value="<%= cikk.AZON %>"><%= cikk.CIM %></option>
-                <% }) %>
-            </select><br>
-            <label for="leiras">A hiba leírása:</label><br>
-            <textarea id="leiras" name="leiras" class="rounded"></textarea><br>
-            <input type="submit" value="Mentés" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-        </form>
+    <div class="flex items-center justify-center pt-10">
+        <div class="w-full max-w-lg mx-auto">
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <p class="text-center text-3xl font-bold p-3">Új hiba bejelentése</p>
+                <form action="/hibajelentesek/uj" method="POST">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="cikk">
+                            Érintett cikk:
+                        </label>
+                        <select id="cikk" name="cikk" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <% cikkek.forEach(cikk => { %>
+                            <option value="<%= cikk.AZON %>"><%= cikk.CIM %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="leiras">
+                            A hiba leírása:
+                        </label>
+                        <textarea id="leiras" name="leiras" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <input type="submit" value="Mentés" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 </body>
 

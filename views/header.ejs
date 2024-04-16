@@ -8,10 +8,12 @@
                 <li><a href="/" class="px-2 py-1 hover:text-gray-300">Főoldal</a></li>
                 <li><a href="/cikkek" class="px-2 py-1 hover:text-gray-300">Cikkjeink</a></li>
                 <% if(typeof user != 'undefined') { %>
+                    <li><a href="/hibajelentesek" class="px-2 py-1 hover:text-gray-300">Hibajelentések</a></li>
+                    <li><a href="/cikkek/uj" class="px-2 py-1 hover:text-gray-300">Új cikk</a></li>
+                    <li><a href="/hibajelentesek/uj" class="px-2 py-1 hover:text-gray-300">Új hibabejelentés</a></li>
                     <% if (user.admin) { %>
                         <li><a href="/admin" class="px-2 py-1 hover:text-gray-300">Admin</a></li>
                     <% } %>
-                    <li><a href="/cikkek/uj" class="px-2 py-1 hover:text-gray-300">Új cikk létrehozása</a></li>
                     <li><a href="/login" class="px-2 py-1 hover:text-gray-300">Kijelentkezés</a></li>
                 <% } else { %>
                     <li><a href="/login" class="px-2 py-1 hover:text-gray-300">Bejelentkezés</a></li>

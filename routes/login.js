@@ -31,7 +31,7 @@ router.post("/",async (req, res) => {
     if (user) {
         const match = await bcrypt.compare(jelszo, user.JELSZO);
         if (match) {
-            const token = generateToken({azon: user.AZON,nev: user.NEV, admin: user.ADMIN});
+            const token = generateToken({azon: user.AZON,nev: user.NEV, admin: user.ADMIN, lektorAzon: user.LEKTORAZON});
             res.cookie('auth_token', token);
             return res.redirect('/');
         }else{

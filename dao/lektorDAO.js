@@ -32,6 +32,10 @@ class LektorDAO{
     async deleteLektor(azon){
         await this.connection.returnNone(`DELETE FROM lektor WHERE azon = :azon`, {azon: {val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER}});
     }
+
+    async updateLektor(azon, fokozat, intezet, szakterulet){
+        await this.connection.returnNone(`UPDATE lektor SET fokozat = :fokozat, intezet = :intezet, szakterulet = :szakterulet WHERE azon = :azon`, {azon: {val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER}, fokozat: {val: String(fokozat), dir: oracledb.BIND_IN, type: oracledb.STRING}, intezet: {val: String(intezet), dir: oracledb.BIND_IN, type: oracledb.STRING}, szakterulet: {val: String(szakterulet), dir: oracledb.BIND_IN, type: oracledb.STRING}});
+    }
 }
 
 module.exports = LektorDAO;

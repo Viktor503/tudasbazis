@@ -36,7 +36,7 @@ router.post('/uj', async (req, res) => {
     const hibajelentes = new HibajelentesDAO(req.conn);
     const hibajelentesek = await hibajelentes.getAll();
 
-    const cikk = new cikkDAO(req.conn);
+    const cikk = new CikkDAO(req.conn);
     const cikkek = await cikk.getAll();
     if(req.body.leiras.length < 10){
         res.render('ujhibajelentes', {"title": "Új hiba jelentése", hibajelentesek, cikkek, user: req.user, "error": "A leírásnak legalább 10 karakter hosszúnak kell lennie"});

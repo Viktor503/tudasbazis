@@ -229,6 +229,7 @@ router.get('/reset', async (req, res) => {
         return;
     }
     req.conn.createDatabase();
+    res.clearCookie('auth_token');
     res.redirect("/");
 });
 

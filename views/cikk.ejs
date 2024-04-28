@@ -51,9 +51,9 @@
                         <p class="italic font-light pb-5">Nincs hasonló cikk</p>
                     <% } %>
                     <% hasonlo.forEach(element => { %>
-                       <div class="py-5 hover:text-blue-400"><a href="<%= element.AZON%>"><%= element.CIM %></a></div>
+                       <div class="py-2 hover:text-blue-400"><a href="<%= element.AZON%>"><%= element.CIM %></a></div>
                     <% }); %>
-                    <h1 class="text-xl font-bold">A cikk kulcsszavai:</h1>
+                    <h1 class="text-xl font-bold pt-5">A cikk kulcsszavai:</h1>
                     <% cikk.kulcsszavak.forEach(element => { %>
                        <p class="italic font-light">#<%=element%></p>
                     <% }); %>

@@ -145,6 +145,15 @@ class FelhasznaloDAO {
         },
       });
     }
+
+  async getFelhasznalokCikkekNelkul() {
+    let ret = await this.connection.returnOutBinds(`BEGIN 
+    :cursor := get_users_without_articles();
+    END;`, {
+      cursor: {dir: oracledb.BIND_OUT, type: oracledb.CURSOR}
+    });
+    return await ret.cursor.getRows();
+  }
 };
 
 module.exports = FelhasznaloDAO;

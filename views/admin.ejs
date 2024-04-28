@@ -62,6 +62,14 @@
         </div>
         <div class="flex justify-center items-center p-6">
             <div class="bg-gray-200 p-4 rounded-lg">
+                <h1 class="flex justify-center items-center text-2xl">Felhasználók cikk nélkül</h1>
+                <% felhasznalokCikkekNelkul.forEach(element => { %>
+                    <p class="text-center justify-center"><%= element.NEV %></p>
+                <% }) %>
+            </div>
+        </div>
+        <div class="flex justify-center items-center p-6">
+            <div class="bg-gray-200 p-4 rounded-lg">
                 <button class="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin/reset'">
                     Adatbázis visszaállítása
                 </button>

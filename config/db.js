@@ -68,6 +68,15 @@ class Connection {
         }
     }
 
+    async returnOutBinds(query, binds = {}) {
+        try {
+            const result = await this.connection.execute(query, binds);
+            return result.outBinds;
+        } catch (err) {
+            console.log(err);
+        }
+    }
+
     async insert(table, values) {
         try {
             const result = await this.connection.execute(`INSERT INTO ${table} VALUES (${values})`);

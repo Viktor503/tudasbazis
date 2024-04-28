@@ -22,6 +22,73 @@ class CikkDAO {
         );
     }
 
+    async getMoreByAzonok(azon) {
+        const inBindings = azon.map((val) => ({ val, dir: oracledb.BIND_IN, type: oracledb.NUMBER }));
+        const placeholders = azon.map((_, index) => `:azon${index + 1}`).join(", ");
+        const query = `SELECT * FROM cikk WHERE cikk.azon IN (${placeholders})`;
+        const bindParams = inBindings.reduce((params, binding, index) => {
+            params[`azon${index + 1}`] = binding;
+            return params;
+        }, {});
+        return await this.connection.returnMore(query, bindParams);
+    }
+
+    async nyelvSzerint(){
+        return await this.connection.returnMore(
+            `
+            SELECT cikk.cim,COUNT(cikk.azon) AS nyelvszám 
+            FROM cikk,nyelvkapcsolat 
+            WHERE(cikk.azon=nyelvkapcsolat.cikkazon) 
+            GROUP BY cikk.cim 
+            ORDER BY nyelvszám DESC
+            `
+        );
+    }
+
+    
+    async getKulcsszavak(azon){
+        var res = await this.connection.returnMore(
+            `
+            SELECT kulcsszo FROM KULCSSZO where azon in (SELECT kulcsszoazon from kulcsszokapcsolat WHERE cikkazon = :azon)
+            `,{
+                azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
+            }
+        );
+        var res2 = [];
+        res.forEach(element => {
+            res2.push(element.KULCSSZO);
+        });
+        return res2;
+    }
+
+
+    async getHasonloAzon(id) {
+        const cursor = await this.connection.returnOutBinds(
+            `
+            BEGIN
+            :cursor := SUGGESTER(:id);
+            END;
+            `,{
+                id: { val: Number(id), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
+                cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT }
+            }
+        );
+        const res = await cursor.cursor.getRows();
+        var res2 = [];
+        res.forEach(element => {
+            res2.push(element.CIKKAZON);
+        });
+        return res2;
+    }
+    async getHasonlo(id) {
+        const res = await this.getMoreByAzonok(await this.getHasonloAzon(id));
+        if(res){
+            return res;
+        }else{
+            return [];
+        }
+    }
+
     async getByCim(cim) {
         return await this.connection.returnMore(
             `SELECT * FROM cikk WHERE cim LIKE %:cim%`,

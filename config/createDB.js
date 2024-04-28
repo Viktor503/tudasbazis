@@ -269,7 +269,6 @@ BEGIN
 END;    
 `,
 
-=======
 
 `create or replace FUNCTION get_users_without_articles RETURN SYS_REFCURSOR
 IS

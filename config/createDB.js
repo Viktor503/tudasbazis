@@ -249,5 +249,18 @@ const script = [
 "INSERT INTO Hibajelentes (bejelento,cikkAzon,aktiv,datum,tartalom) values(4,4,1,TO_TIMESTAMP('2024/03/21 13:33:33', 'YYYY/MM/DD HH24:MI:SS'),to_clob('A kiberbiztonsági témájú cikkben egy fontos adatvédelmi szabályozásról nincs említés, ami olyan, mintha egy biztonsági rést hagytak volna a hálózaton. Kérem, vegyék fel ezt a fontos tényt a cikkbe.') )",
 "INSERT INTO Hibajelentes (bejelento,cikkAzon,aktiv,datum,tartalom) values(5,5,1,TO_TIMESTAMP('2024/03/21 00:23:42', 'YYYY/MM/DD HH24:MI:SS'),to_clob('A gépi tanulás témájú cikkben néhány releváns példa hiányzik, ami olyan, mintha a gép elveszett volna a tanulás folyamatában. Kérem, adják hozzá ezeket a példákat a cikkhez. Köszönöm!') )",
 "INSERT INTO Hibajelentes (bejelento,cikkAzon,aktiv,datum,tartalom) values(6,6,1,TO_TIMESTAMP('2024/03/21 16:43:02', 'YYYY/MM/DD HH24:MI:SS'),to_clob('A cikk a kiberbiztonságról néhány alapvető biztonsági intézkedést hagyott ki, ami olyan, mintha egy zárt ajtót hagytak volna nyitva az internetes fenyegetések előtt. Kérem, tegyék teljessé a cikket a megfelelő biztonsági tippekkel.') )",
+
+`create or replace FUNCTION get_users_without_articles RETURN SYS_REFCURSOR
+IS
+ v_cursor SYS_REFCURSOR;
+BEGIN
+    OPEN v_cursor FOR
+        SELECT f.AZON, f.NEV
+        FROM FELHASZNALO f
+        LEFT JOIN CIKK c ON f.AZON = c.SZERZOAZON
+        WHERE c.azon IS NULL
+        ORDER BY f.AZON;
+    RETURN v_cursor;
+END get_users_without_articles;`,
 ];
 module.exports = script;

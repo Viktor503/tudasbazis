@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang ="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+<body class="bg-indigo-500">
+    <%- include('header') %>
+
+    <p class="text-3xl text-center justify-center items-center text-white p-4"><%= felhasznalo.NEV %> adatai</p>
+    <div class="flex flex-col justify-center items-center p-6 mx-auto">
+        <% if (user.nev == felhasznalo.NEV) {%>
+        <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateFelhasznalo">
+        <div class="bg-gray-200 p-4 rounded-lg mb-10">
+            <label for="jelszo">Jelszó: </label>
+            <input type="password" id="jelszo" name="jelszo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"><br>
+            <label for="jelszo2">Jelszó újra: </label>
+            <input type="password" id="jelszo2" name="jelszo2" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" type="submit">Jelszó módosítása</button>
+        </div>
+    </form>
+    <% } %>
+    <% if (user.admin || user.nev == felhasznalo.NEV) { %>
+        <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateAdminLektor">
+            <input type="hidden" name="azon" id="azon" value="<%= felhasznalo.LEKTORAZON %>">
+        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="lektor"> lektor:
+                    <input type="checkbox" id="lektor" name="lektor" <% if(felhasznalo.LEKTORAZON != null){%> checked  <%}%>>
+                </label>
+            </div>
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="admin"> admin:
+                    <input type="checkbox" id="admin" name="admin" <% if(felhasznalo.ADMIN){%> checked <%}%>>
+                </label>
+            </div>
+            
+            <div class="mb-6">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="fokozat">
+                    Fokozat:
+                    <select id="fokozat" name="fokozat">
+                        <option value="BSc" <% if (lektor != undefined && lektor.FOKOZAT == 'BSc') {%> selected <% } %>>BSc</option>
+                        <option value="MSc" <% if (lektor != undefined && lektor.FOKOZAT == 'MSc') {%> selected <% } %>>MSc</option>
+                        <option value="PhD" <% if (lektor != undefined && lektor.FOKOZAT == 'PhD') {%> selected <% } %>>PhD</option>
+                    </select>
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="intezet">
+                    Intézet:
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="intezet" name="intezet" value="<%= !lektor ? '' : lektor.INTEZET%>" type="text">
+                </label>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="szakterulet">
+                    Szakterület:
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="szakterulet" name="szakterulet" value="<%= !lektor ? '' : lektor.SZAKTERULET%>" type="text">
+                </label>
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">Módosítás</button>
+            </div>
+            </div>
+        </form>
+        </div>
+
+    <% } %>
+        <% if (!user.admin && user.lektorAzon !== null) { %>
+            
+        <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateLektor">
+        <div class="bg-gray-200 p-4 rounded-lg mb-10">
+            <p class="text-3xl text-center justify-center items-center text-black p-4">Lektori adatok</p>
+            <label for="fokozat">Fokozat: </label>
+            <input type="text" id="fokozat" name="fokozat" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<%= lektor.FOKOZAT %>"><br>
+            <label for="intezet">Intézet: </label>
+            <input type="text" id="intezet" name="intezet" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<%= lektor.INTEZET %>"><br>
+            <label for="szakterulet">Szakterület: </label>
+            <input type="text" id="szakterulet" name="szakterulet" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<%= lektor.SZAKTERULET %>"><br>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4" type="submit">Módosítás</button>
+        </div>
+        </form>
+            <% } %>
+    </div>
+    
+    
+</body>
+</html>

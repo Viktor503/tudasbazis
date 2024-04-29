@@ -38,7 +38,7 @@ router.get('/cikkek/:azon', async (req, res) => {
     }
     res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true});
 }); 
-
+// @deprecated - use /cikkek/:azon/edit instead
 router.get('/cikkeke/:azon', async (req, res) => {
     const cikkek = new cikkDAO(req.conn);
     const felhasznalok = new felhasznaloDAO(req.conn);

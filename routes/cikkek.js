@@ -55,6 +55,37 @@ router.get('/:azon', async (req, res) => {
     res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: false });
 });
 
+router.get('/:azon/edit', async (req, res) => {
+    const cikkDAO = new CikkDAO(req.conn);
+    const cikk = await cikkDAO.getByAzon(req.params.azon);
+       if (!cikk) {
+        res.status(404).send("404 Not Found");
+        return;
+       }
+    const felhasznaloDAO = new FelhasznaloDAO(req.conn);
+    if (!req.user || (!req.user.admin && req.user.azon !== cikk.SZERZOAZON)) {
+        res.status(403).send('Hozzáférés megtagadva (Ki a f*szom az az Edit?)');
+        return;
+    }
+    let szerzo = await felhasznaloDAO.getByAzon(cikk.SZERZOAZON).NEV;
+    if (!szerzo) {
+        szerzo = "Ismeretlen";
+    }
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true });
+});
+
+router.post('/:azon/edit', async (req, res) => {
+    const cikkek = new CikkDAO(req.conn);
+    const regiCikk = await cikkek.getByAzon(req.params.azon);
+    if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
+        await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
+        // TODO: triggerrel növelni a módosítások számát
+        res.redirect("/cikkek");
+        return;
+    }
+    res.sendStatus(403);
+});
+
 router.delete('/:azon', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const torolni = await cikkDAO.getByAzon(req.params.azon);

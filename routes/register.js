@@ -11,10 +11,10 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
-    const nev = req.body.username;
+    const nev = req.body.username.toLowerCase();
     const jelszo = req.body.password;
     const jelszo2 = req.body.password2;
-
+    
     if(jelszo.length < 8){
         return res.render('register', {"title": "Regisztráció", "error": "A jelszó túl rövid!",user: req.user});
     }

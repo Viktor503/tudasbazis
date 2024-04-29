@@ -9,6 +9,12 @@ class CikkDAO {
         return await this.connection.returnMore(`SELECT * FROM cikk`);
     }
 
+    async getLastThree() {
+        return await this.connection.returnMore(`SELECT Cikk.azon, Cikk.cim, Cikk.tartalom, Felhasznalo.nev AS SZERZO
+        FROM Cikk, Felhasznalo WHERE Cikk.szerzoazon = Felhasznalo.azon 
+        ORDER BY Felhasznalo.azon DESC FETCH FIRST 3 ROWS ONLY`);
+    }
+
     async getByAzon(azon) {
         return await this.connection.returnOne(
             `SELECT * FROM cikk WHERE azon = :azon`,

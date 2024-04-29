@@ -12,6 +12,53 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
+
+
+    <% if (user !== undefined && (user.azon === cikk.SZERZOAZON || user.admin) && edit) { %>
+        <form method="post" action="/cikkek/<%- cikk.AZON %>/edit">
+            <input type="hidden" name="azon" value="<%= cikk.AZON %>">
+            <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
+                <input type="text" id="cim" name="cim" class="text-5xl m-4 bg-transparent h-full w-full text-center" value="<%= cikk.CIM %>">
+            </div>
+            <div class="m-3 p-3 bg-white h-screen rounded">
+                <textarea id="tartalom" name="tartalom" class="text-xl bg-transparent h-full w-full"><%= cikk.TARTALOM %></textarea>
+            </div>
+            <button class="bg-green-500 hover:bg-green-700 p-2 m-2 rounded" type="submit">Mentés</button>
+        </form>
+    <% } else {%>
+    <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
+        <p class="text-5xl m-4"><%= cikk.CIM %></p>
+        <p class="text-2xl m-4 text-gray-700"><%= szerzo %></p>
+        <% if (user !== undefined && (user.azon === cikk.SZERZOAZON || user.admin) && !edit) { %>
+                <button class="bg-green-500 hover:bg-green-600 p-2 m-2 rounded" onclick="location.href='/cikkek/<%= cikk.AZON %>/edit'">Szerkesztés</button>
+                <button class="bg-red-500 hover:bg-red-600 p-2 m-2 rounded" onclick="deleteCikk('<%= cikk.AZON %>')">Törlés</button>
+                <% } %>
+            </div>
+            <div class="m-3 p-3 bg-white h-svh rounded">
+                <p class="text-xl"><%= cikk.TARTALOM %></p>
+            </div>
+            <% }%>
+
+
+    </div>
+    <% if (user !== undefined && (user.azon === cikk.SZERZOAZON || user.admin)) { %>
+    <script>
+        function deleteCikk(azon) {
+            fetch('/cikkek/' + azon, {
+                method: 'DELETE',
+            }).then((response) => {
+                if (response.ok) {
+                    window.location.href = '/cikkek';
+                }
+            }).catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+    </script>
+    <% } %>
+    
+    <!-- Innen kéne rezolválni -->
+    
         <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin) && edit) { %>
             <form method="post" action="/admin/cikkek/update/<%- cikk.AZON %>">
                 <input type="hidden" name="azon" value="<%= cikk.AZON %>">
@@ -74,4 +121,6 @@
                             }
                         </script>
                         <% } %>
+
+
 </body>

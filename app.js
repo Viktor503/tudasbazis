@@ -33,7 +33,7 @@ const loginRouter = require("./routes/login");
 const adminRouter = require("./routes/admin");
 const cikkekRouter = require("./routes/cikkek");
 const hibajelentesekRouter = require("./routes/hibajelentesek");
-const fiokomRouter = require("./routes/fiokom");
+const profilRouter = require("./routes/profil");
 
 app.use("/", indexRouter);
 app.use("/login", loginRouter);
@@ -41,7 +41,7 @@ app.use("/register", registerRouter);
 app.use("/admin", adminRouter);
 app.use("/cikkek", cikkekRouter);
 app.use("/hibajelentesek", hibajelentesekRouter);
-app.use("/fiokom", fiokomRouter);
+app.use("/profil", profilRouter);
 
 app.use("*", (req, res) => {
   res.status(404).send("404 Not Found");

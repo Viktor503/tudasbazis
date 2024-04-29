@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 
 
 router.post("/",async (req, res) => {
-    const nev = req.body.username;
+    const nev = req.body.username.toLowerCase();
     const jelszo = req.body.password;
     const felhasznaloDao = new FelhasznaloDAO(req.conn);
     const user = await felhasznaloDao.getByNev(nev);

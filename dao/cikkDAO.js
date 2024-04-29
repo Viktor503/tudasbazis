@@ -51,20 +51,14 @@ class CikkDAO {
         );
     }
 
-    // TODO: wtf is this lets just use smg from KulcsszoDAO
     async getKulcsszavak(azon){
-        var res = await this.connection.returnMore(
+        return await this.connection.returnMore(
             `
             SELECT * FROM KULCSSZO where azon in (SELECT kulcsszoazon from kulcsszokapcsolat WHERE cikkazon = :azon)
             `,{
                 azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
             }
         );
-        var res2 = [];
-        res.forEach(element => {
-            res2.push(element);
-        });
-        return res2;
     }
 
 
@@ -80,7 +74,7 @@ class CikkDAO {
             }
         );
         const res = await cursor.cursor.getRows();
-        var res2 = [];
+        let res2 = [];
         res.forEach(element => {
             res2.push(element.CIKKAZON);
         });

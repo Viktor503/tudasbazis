@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title>
+        <%= title %>
+    </title>
+</head>
+
+<body class="bg-indigo-500">
+    <%- include('header') %>
+        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) { %>
+            <form method="post" action="/admin/cikkek/update/<%- cikk.AZON %>">
+                <div>
+                    <button class="bg-blue-500 hover:bg-blue-700 p-2 m-2 rounded" type="button"
+                        onclick="location.href='/cikkek/<%= cikk.AZON %>'">Vissza</button>
+                    <button class="bg-green-500 hover:bg-green-700 p-2 m-2 rounded" type="submit">Mentés</button>
+                </div>
+                <input type="hidden" name="azon" value="<%= cikk.AZON %>">
+                <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
+                    <input type="text" id="cim" name="cim"
+                        class="appearance-none text-5xl m-4 bg-transparent h-full w-full text-center focus:outline-none"
+                        value="<%= cikk.CIM %>">
+                </div>
+
+                <div class="flex items-stretch">
+                    <div class="m-3 p-3 w-full bg-white h-svh rounded">
+                        <textarea id="tartalom" name="tartalom"
+                            class="appearance-none text-xl bg-transparent h-full w-full focus:outline-none"><%= cikk.TARTALOM %></textarea>
+                    </div>
+                    <div class="min-w-fit p-3 m-3 h-svh rounded bg-emerald-700 text-stone-200">
+                        <h1 class="text-2xl font-bold pb-3">Kulcsszavak: </h1>
+                        <select id="kulcsszavak" name="kulcsszavak"
+                            class="appearance-none w-full py-2 px-3 text-white leading-tight bg-transparent overflow-hidden h-3/5 focus:outline-none"
+                            multiple>
+                            <% kulcsszavak.forEach(kulcsszo=> { %>
+                                <option class="appearance-none checked:bg-white checked:text-black"
+                                    value="<%= kulcsszo.AZON %>" 
+                                    <% var match = false;
+                                    cikk.kulcsszavak.forEach(element=> {
+                                        if (element.AZON === kulcsszo.AZON) {
+                                        match = true;
+                                        }}); 
+                                    if (match) {%> selected <%}%>>
+                                    <%= kulcsszo.KULCSSZO %>
+                                </option>
+                                <% }) %>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <% } %>
+</body>

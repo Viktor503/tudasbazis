@@ -71,11 +71,13 @@ router.get('/:azon/edit', async (req, res) => {
         res.status(403).send('Hozzáférés megtagadva (Ki a f*szom az az Edit?)');
         return;
     }
+    const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
+    cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     let szerzo = await felhasznaloDAO.getByAzon(cikk.SZERZOAZON).NEV;
     if (!szerzo) {
         szerzo = "Ismeretlen";
     }
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true });
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true, hasonlo: hasonlocikkek});
 });
 
 router.post('/:azon/edit', async (req, res) => {

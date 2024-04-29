@@ -12,7 +12,9 @@ router.get('/', async (req, res) => {
         res.status(403).send('403 Forbidden');
         return;
     }
-    res.render('admin', {"title": "Admin",user: req.user});
+    const felhasznalo = new felhasznaloDAO(req.conn);
+    const felhasznalokCikkekNelkul = await felhasznalo.getFelhasznalokCikkekNelkul();
+    res.render('admin', {"title": "Admin",user: req.user, felhasznalokCikkekNelkul});
 });
 
 router.get('/cikkek', async (req, res) => {

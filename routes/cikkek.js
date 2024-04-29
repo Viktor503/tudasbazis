@@ -44,6 +44,9 @@ router.get('/:azon', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const cikk = await cikkDAO.getByAzon(req.params.azon);
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
+    const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
+    const nyelvszerint = await cikkDAO.nyelvSzerint();
+    cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     if (!szerzo) {
         szerzo = "Ismeretlen";
@@ -52,7 +55,8 @@ router.get('/:azon', async (req, res) => {
         res.status(404).send("404 Not Found");
         return;
     }
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: false });
+    
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: false, hasonlo: hasonlocikkek});
 });
 
 router.get('/:azon/edit', async (req, res) => {

@@ -23,7 +23,7 @@ router.get('/:nev', async (req, res) => {
     if(felhasznalo.LEKTORAZON){
         lektor = await lektorok.getByAzon(felhasznalo.LEKTORAZON);
     }
-    res.render('profil', {"title": req.user.nev + " adatai", user: req.user, felhasznalo, lektor, "error": null});
+    res.render('profil', {"title": felhasznalo.NEV + " adatai", user: req.user, felhasznalo, lektor, "error": null});
 });
 
 router.post('/:nev/updateFelhasznalo', async (req, res) => {
@@ -67,7 +67,7 @@ router.post('/:nev/updateAdminLektor', async (req, res) => {
     const felhasznalok = new felhasznaloDAO(req.conn);
     const felhasznalo = await felhasznalok.getByNev(req.params.nev);
     const lektorok = new lektorDAO(req.conn);
-    var ujLektor = null;
+    let ujLektor = null;
     console.log(req.body) 
     if (req.body.fokozat && req.body.intezet && req.body.szakterulet) {
         if(req.body.azon == '') {

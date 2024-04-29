@@ -8,7 +8,7 @@ const nyelvDAO = require('../dao/nyelvDAO');
 const hibajelentesDAO = require('../dao/hibajelentesDAO');
 
 router.get('/', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/cikkek', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -36,7 +36,7 @@ router.get('/cikkek/:azon', async (req, res) => {
         return;
     }
     if (!szerzo) {
-        szerzo = "Ismeretlen";
+        let szerzo = "Ismeretlen";
     }
     res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true});
 }); 
@@ -69,7 +69,7 @@ router.post('/cikkek/update/:azon', async (req, res) => {
 });
 
 router.get('/cikkeke', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -79,7 +79,7 @@ router.get('/cikkeke', async (req, res) => {
 });
 
 router.get('/felhasznalok', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -89,7 +89,7 @@ router.get('/felhasznalok', async (req, res) => {
 });
 
 router.get('/felhasznaloke', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -99,29 +99,29 @@ router.get('/felhasznaloke', async (req, res) => {
 });
 
 router.get('/felhasznaloke/:azon', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
     const felhasznalok = await felhasznalo.getAll();
-    user = await felhasznalo.getByAzon(req.params.azon);
+    let user = await felhasznalo.getByAzon(req.params.azon);
     res.render('register', {"title": "Felhasználók", edit: true, route: "/admin/felhasznaloke/", user: user});
 });
 
 router.post('/felhasznaloke/:azon', async (req, res) => {
-    azon = req.params.azon
-    var admin = 0;
-    var lektor = null;
+    let azon = req.params.azon
+    let admin = 0;
+    let lektor = null;
     if(req.body.admin){
         admin = 1;
     }
     if(req.body.lektor){
         lektor = 1;
     }
-    f = new felhasznaloDAO(req.conn);
-    l = new lektorDAO(req.conn);
-    user = await f.getByAzon(azon);
+    let f = new felhasznaloDAO(req.conn);
+    let l = new lektorDAO(req.conn);
+    let user = await f.getByAzon(azon);
     if(user.LEKTORAZON == null){
         if(lektor == 1){
             await l.insertLektor(req.body.fokozat, req.body.intezmeny, req.body.szakterulet);
@@ -139,7 +139,7 @@ router.post('/felhasznaloke/:azon', async (req, res) => {
 });
 
 router.get('/kulcsszavak', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -149,7 +149,7 @@ router.get('/kulcsszavak', async (req, res) => {
 });
 
 router.get('/kulcsszavake', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -159,7 +159,7 @@ router.get('/kulcsszavake', async (req, res) => {
 });
 
 router.get('/lektorok', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -169,7 +169,7 @@ router.get('/lektorok', async (req, res) => {
 });
 
 router.get('/lektoroke', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -179,7 +179,7 @@ router.get('/lektoroke', async (req, res) => {
 });
 
 router.get('/nyelvek', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -189,7 +189,7 @@ router.get('/nyelvek', async (req, res) => {
 });
 
 router.get('/nyelveke', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -199,7 +199,7 @@ router.get('/nyelveke', async (req, res) => {
 });
 
 router.get('/hibajelentesek', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -223,7 +223,7 @@ router.get('/hibajelentesek/:azon', async (req, res) => {
 });
 
 router.get('/hibajelenteseke', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }
@@ -234,7 +234,7 @@ router.get('/hibajelenteseke', async (req, res) => {
 
 
 router.get('/reset', async (req, res) => {
-    if (!req.user || !req.user.admin) {
+    if (!req.user?.admin) {
         res.status(403).send('403 Forbidden');
         return;
     }

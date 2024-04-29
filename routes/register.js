@@ -2,9 +2,6 @@ const express = require('express')
 const router = express.Router()
 const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 
-const bcrypt = require("bcrypt");
-const { render } = require('ejs');
-
 router.get('/', async (req, res) => {
     res.render('register', {"title": "Regisztráció",user: req.user});
 });

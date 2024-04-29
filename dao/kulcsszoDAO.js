@@ -24,6 +24,25 @@ class KulcsszoDAO {
     async deleteKulcsszo(azon) {
         await this.connection.returnNone(`DELETE FROM kulcsszo WHERE azon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
     }
+
+    async updateKulcsszavak(azon, kulcsszavak){
+        await this.connection.returnNone(
+        `DELETE FROM kulcsszokapcsolat WHERE cikkazon = :azon`,
+        {
+            azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
+        });
+        if(kulcsszavak.length == 0) return;
+        if(kulcsszavak.length == 1){kulcsszavak = [kulcsszavak];}
+        kulcsszavak.forEach(async Element => {
+            await this.connection.returnNone(
+                `INSERT INTO kulcsszokapcsolat (cikkazon, kulcsszoazon) VALUES (:azon, :kulcsszoazon)`,
+                {
+                    azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
+                    kulcsszoazon: { val: Number(Element), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
+                }
+            );
+        });
+    }
 }
 
 module.exports = KulcsszoDAO;

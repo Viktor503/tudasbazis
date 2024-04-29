@@ -51,6 +51,7 @@ class CikkDAO {
         );
     }
 
+
     async getKulcsszavak(azon){
         return await this.connection.returnMore(
             `
@@ -161,7 +162,7 @@ class CikkDAO {
                 },
             }
         );
-    }
+    }    
 
     async insertCikk(
         cim,

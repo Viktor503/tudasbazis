@@ -53,16 +53,22 @@ router.get('/cikkeke/:azon', async (req, res) => {
     if (!szerzo) {
         szerzo = "Ismeretlen";
     }
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, edit: true});
+    const kDao = new kulcsszoDAO(req.conn);
+    const kulcsszavak = await kDao.getAll(); 
+    cikk.kulcsszavak = await cikkek.getKulcsszavak(req.params.azon);
+    const hasonlocikkek = await cikkek.getHasonlo(req.params.azon);
+    res.render('cikkEdit', {"title": cikk.CIM, cikk, szerzo, user: req.user,kulcsszavak,hasonlo:hasonlocikkek, edit: true});
 });
 
 router.post('/cikkek/update/:azon', async (req, res) => {
     const cikkek = new cikkDAO(req.conn);
+    const kulccsszavak = new kulcsszoDAO(req.conn);
     const regiCikk = await cikkek.getByAzon(req.params.azon);
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
+        await kulccsszavak.updateKulcsszavak(req.body.azon, req.body.kulcsszavak);
         // TODO: triggerrel növelni a módosítások számát
-        res.redirect("/admin/cikkeke");
+        res.redirect("/admin");
         return;
     }
     res.sendStatus(403);

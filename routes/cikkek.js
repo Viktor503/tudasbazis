@@ -86,6 +86,7 @@ router.get('/:azon/edit', async (req, res) => {
 router.post('/:azon/edit', async (req, res) => {
     const cikkek = new CikkDAO(req.conn);
     const regiCikk = await cikkek.getByAzon(req.params.azon);
+    console.log(req.body)
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
         // TODO: triggerrel növelni a módosítások számát

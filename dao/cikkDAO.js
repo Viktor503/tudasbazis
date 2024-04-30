@@ -42,7 +42,7 @@ class CikkDAO {
     async nyelvSzerint(){
         return await this.connection.returnMore(
             `
-            SELECT cikk.cim,(COUNT(nyelvkapcsolat.eredeticikkazon)+1) AS nyelvszám 
+            SELECT cikk.cim,cikk.azon,(COUNT(nyelvkapcsolat.eredeticikkazon)+1) AS nyelvszám 
             FROM cikk,nyelvkapcsolat 
             WHERE(cikk.azon=nyelvkapcsolat.eredeticikkazon) 
             GROUP BY cikk.azon,cikk.cim
@@ -209,7 +209,6 @@ class CikkDAO {
                 },
                 azon: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
             });
-            console.log(id['azon'][0]);
         return id['azon'][0];
     }
 

@@ -224,7 +224,6 @@ router.get('/hibajelentesek/:azon', async (req, res) => {
         return;
     }
     res.render('hibajelentes', {"title": "Hibajelentés: " + cikk.CIM, hibajelentes, cikk, user: req.user});
-    console.log(hibajelentesek);
     res.render('list', {"title": "Hibabejelentések", data : hibajelentesek,user: req.user});
 });
 

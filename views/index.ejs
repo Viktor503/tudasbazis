@@ -53,7 +53,7 @@
                 <% 
                     nyelv.forEach(sor => {
                 %>
-                <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center">
+                <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center" onclick="location.href='/cikkek/<%= sor.AZON %>'">
                     <td class="px-4 py-2">
                         <p><%= sor.CIM %></p>
                     </td>

@@ -51,7 +51,6 @@ router.post('/:nev/updateLektor', async (req, res) => {
 
     const lektorok = new lektorDAO(req.conn);
     const regiLektor = await lektorok.getByAzon(req.user.lektorAzon);
-    console.log(req.body);
     if (req.body.fokozat && req.body.intezet && req.body.szakterulet) {
         await lektorok.updateLektor(req.body.azon, req.body.fokozat, req.body.intezet, req.body.szakterulet);
     }
@@ -68,7 +67,6 @@ router.post('/:nev/updateAdminLektor', async (req, res) => {
     const felhasznalo = await felhasznalok.getByNev(req.params.nev);
     const lektorok = new lektorDAO(req.conn);
     let ujLektor = null;
-    console.log(req.body) 
     if (req.body.fokozat && req.body.intezet && req.body.szakterulet) {
         if(req.body.azon == '') {
             if (req.body.lektor){

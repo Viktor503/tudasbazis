@@ -50,6 +50,7 @@ class KulcsszoDAO {
         {
             azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
         });
+        if(!kulcsszavak) return;
         if(kulcsszavak.length == 0) return;
         if(kulcsszavak.length == 1){kulcsszavak = [kulcsszavak];}
         kulcsszavak.forEach(async Element => {
@@ -60,6 +61,22 @@ class KulcsszoDAO {
                     kulcsszoazon: { val: Number(Element), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
                 }
             );
+        });
+    }
+
+    async addKulcsszoToCikk(cikkAzon, kulcsszo){
+        await this.connection.returnNone(`INSERT INTO CikkazonEsKulcsszo (azon, kulcsszo) VALUES (:cikkAzon, :kulcsszo)`,
+        {
+            cikkAzon: {val: Number(cikkAzon), dir: oracledb.BIND_IN, type: oracledb.NUMBER},
+            kulcsszo: {val: String(kulcsszo), dir: oracledb.BIND_IN, type: oracledb.STRING}
+        });
+    }
+
+    async deleteKulcsszoFromCikk(cikkAzon, kulcsszo){
+        await this.connection.returnNone(`DELETE CikkazonEsKulcsszo WHERE azon = :cikkAzon AND kulcsszo = :kulcsszo`,
+        {
+            cikkAzon: {val: Number(cikkAzon), dir: oracledb.BIND_IN, type: oracledb.NUMBER},
+            kulcsszo: {val: String(kulcsszo), dir: oracledb.BIND_IN, type: oracledb.STRING}
         });
     }
 }

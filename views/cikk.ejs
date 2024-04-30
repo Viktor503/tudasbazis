@@ -17,21 +17,51 @@
                 <%= cikk.CIM %>
             </p>
             <p class="text-2xl m-4 text-gray-700">
-                <%= szerzo %>
+                <%= szerzo %> (<%= cikk.MODOSITASOKSZAMA %>)
             </p>
-            <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) {%>
+            <% if (cikk.ALLAPOT != 3) { %>
+                <% let allapot; %>
+                <% switch (cikk.ALLAPOT) {
+                        case 0:
+                            allapot = "Szerkesztés alatt";
+                            break;
+                        case 1:
+                            allapot = "Lektorálásra vár";
+                            break;
+                        case 2:
+                            allapot = "Lektorálás alatt: "+ lektorNev +" által";
+                            break;
+                        default:
+                            allapot = "Ismeretlen";
+                            break;
+                    } %>
+                <p class="text-xl m-4 text-gray-800">
+                    Cikk állapota: <%= allapot  %>
+                </p>
+            <% } %>
+            <% if (user !==undefined && user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2) { %>
+                <button class="bg-indigo-500 hover:bg-indigo-600 p-2 m-2 rounded"
+                    onclick="finalizeCikk('<%= cikk.AZON %>')">Cikk véglegesítése</button>
+            <% } %>
+            <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.lektorAzon===cikk.LEKTORAZON || user.admin)) {%>
                 <button class="bg-green-500 hover:bg-green-600 p-2 m-2 rounded"
                     onclick="location.href='/cikkek/<%= cikk.AZON %>/edit'">Szerkesztés</button>
+            <% } %>
+            <% if (user !==undefined && user.azon===cikk.SZERZOAZON && cikk.ALLAPOT == 0) { %>
+                <button class="bg-blue-500 hover:bg-blue-600 p-2 m-2 rounded"
+                    onclick="sendForLektor('<%= cikk.AZON %>')">Lektorálásra küldés</button>
+            <% } %>
+            <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) {%>
                 <button class="bg-red-500 hover:bg-red-600 p-2 m-2 rounded"
                     onclick="deleteCikk('<%= cikk.AZON %>')">Törlés</button>
-                <% } %>
+            <% } %>
         </div>
         <div class="flex items-stretch">
             <div class="m-3 p-3 w-full bg-white h-svh rounded">
                 <textarea id="tartalom" name="tartalom"
                     class="appearance-none text-xl bg-transparent h-full w-full focus:outline-none"><%= cikk.TARTALOM %></textarea>
             </div>
-            <div class="min-w-fit p-3 m-3 h-svh rounded bg-emerald-700 text-stone-200">
+            <div class="w-fit p-3 m-3 h-svh rounded bg-emerald-700 text-stone-200">
                 <h1 class="text-2xl font-bold pb-3">Hasonló cikkek</h1>
                 <% if(hasonlo.length==0){%>
                     <p class="italic font-light pb-5">Nincs hasonló cikk</p>
@@ -71,6 +101,36 @@
                         console.error('Error:', error);
                     });
                 }
+            </script>
+        <% } %>
+            <% if (user !==undefined && user.azon===cikk.SZERZOAZON && cikk.ALLAPOT == 0) { %>
+            <script>
+                function sendForLektor(azon) {
+                    fetch('/cikkek/' + azon + '/lektorSend', {
+                        method: 'POST',
+                    }).then((response) => {
+                        if (response.ok) {
+                            window.location.href = '/cikkek/' + azon;
+                        }
+                    }).catch((error) => {
+                        console.error('Error:', error);
+                    });
+                }
+            </script>
+            <% } %>
+            <% if (user !==undefined && user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2) { %>
+            <script>
+                function finalizeCikk(azon) {
+                fetch('/cikkek/' + azon + '/finalize', {
+                    method: 'POST',
+                }).then((response) => {
+                    if (response.ok) {
+                        window.location.href = '/cikkek/' + azon;
+                    }
+                }).catch((error) => {
+                    console.error('Error:', error);
+                });
+            }
             </script>
             <% } %>
 

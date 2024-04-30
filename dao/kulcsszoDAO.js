@@ -62,6 +62,22 @@ class KulcsszoDAO {
             );
         });
     }
+
+    async addKulcsszoToCikk(cikkAzon, kulcsszo){
+        await this.connection.returnNone(`INSERT INTO CikkazonEsKulcsszo (azon, kulcsszo) VALUES (:cikkAzon, :kulcsszo)`,
+        {
+            cikkAzon: {val: Number(cikkAzon), dir: oracledb.BIND_IN, type: oracledb.NUMBER},
+            kulcsszo: {val: String(kulcsszo), dir: oracledb.BIND_IN, type: oracledb.STRING}
+        });
+    }
+
+    async deleteKulcsszoFromCikk(cikkAzon, kulcsszo){
+        await this.connection.returnNone(`DELETE CikkazonEsKulcsszo WHERE azon = :cikkAzon AND kulcsszo = :kulcsszo`,
+        {
+            cikkAzon: {val: Number(cikkAzon), dir: oracledb.BIND_IN, type: oracledb.NUMBER},
+            kulcsszo: {val: String(kulcsszo), dir: oracledb.BIND_IN, type: oracledb.STRING}
+        });
+    }
 }
 
 module.exports = KulcsszoDAO;

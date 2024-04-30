@@ -13,7 +13,7 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
         <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) { %>
-            <form method="post" action="/admin/cikkek/update/<%- cikk.AZON %>">
+            <form method="post" action="/cikkek/<%- cikk.AZON %>/edit">
                 <div>
                     <button class="bg-blue-500 hover:bg-blue-700 p-2 m-2 rounded" type="button"
                         onclick="location.href='/cikkek/<%= cikk.AZON %>'">Vissza</button>
@@ -38,7 +38,7 @@
                             multiple>
                             <% kulcsszavak.forEach(kulcsszo=> { %>
                                 <option class="appearance-none checked:bg-white checked:text-black"
-                                    value="<%= kulcsszo.AZON %>" 
+                                    value="<%= kulcsszo.KULCSSZO %>" 
                                     <% var match = false;
                                     cikk.kulcsszavak.forEach(element=> {
                                         if (element.AZON === kulcsszo.AZON) {

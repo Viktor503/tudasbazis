@@ -293,6 +293,15 @@ BEGIN
     RETURN v_cursor;
 END get_users_without_articles;`,
 
+`CREATE OR REPLACE TRIGGER update_cikk
+BEFORE UPDATE ON Cikk
+FOR EACH ROW
+BEGIN
+    IF :OLD.tartalom != :NEW.tartalom THEN
+        :NEW.modositasokszama := :OLD.modositasokszama + 1;
+        :NEW.allapot := 0;
+    END IF;
+END update_cikk;`,
 
 `CREATE VIEW CikkazonEsKulcsszo AS
 SELECT Cikk.azon, Kulcsszo.kulcsszo
@@ -337,7 +346,7 @@ BEGIN
         DELETE Kulcsszo WHERE kulcsszo LIKE :OLD.kulcsszo;
     END IF;    
 END;
-`
+`,
 
 ];
 module.exports = script;

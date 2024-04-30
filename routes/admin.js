@@ -249,6 +249,26 @@ router.get('/reset', async (req, res) => {
     res.redirect("/");
 });
 
+router.get('/lektoradd', async (req, res) => {
+    if (!req.user?.admin) {
+        res.status(403).send('403 Forbidden');
+        return;
+    }
+    const lektordao = new lektorDAO(req.conn);
+    const cikkdao = new cikkDAO(req.conn);
+    const lektorok = await lektordao.getAllWithNev();
+    const cikkek = await cikkdao.getWaitingForLektor();
+    res.render('lektoradd', {"title": "Lektor-hozzárendelés", user: req.user, lektorok, cikkek});
+});
 
+router.post('/lektoradd', async (req, res) => {
+    if (!req.user?.admin) {
+        res.status(403).send('403 Forbidden');
+        return;
+    }
+    const cikkdao = new cikkDAO(req.conn);
+    await cikkdao.updateLektor(Number(req.body.cikk), Number(req.body.lektor));
+    res.redirect("/cikkek/" + req.body.cikkazon);
+});
 
 module.exports = router;

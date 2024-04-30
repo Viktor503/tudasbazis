@@ -303,5 +303,50 @@ BEGIN
     END IF;
 END update_cikk;`,
 
+`CREATE VIEW CikkazonEsKulcsszo AS
+SELECT Cikk.azon, Kulcsszo.kulcsszo
+FROM Cikk, Kulcsszo, Kulcsszokapcsolat
+WHERE Cikk.azon = Kulcsszokapcsolat.cikkazon
+AND Kulcsszo.azon = Kulcsszokapcsolat.kulcsszoazon
+ORDER BY Cikk.azon;
+`,
+
+
+`create or replace TRIGGER AddKulcsszo
+INSTEAD OF INSERT ON CikkazonEsKulcsszo
+FOR EACH ROW
+DECLARE
+    v_kulcsszoazon Kulcsszo.azon%TYPE;
+BEGIN
+    SELECT MIN(azon) INTO v_kulcsszoazon FROM Kulcsszo
+    WHERE kulcsszo LIKE :NEW.kulcsszo;
+    IF (v_kulcsszoazon is null) THEN
+        SELECT MAX(azon) INTO v_kulcsszoazon FROM Kulcsszo;
+        INSERT INTO Kulcsszo (kulcsszo) VALUES (:NEW.kulcsszo);
+    END IF;
+    INSERT INTO Kulcsszokapcsolat (cikkazon, kulcsszoazon)
+    VALUES (:NEW.azon, v_kulcsszoazon);    
+END;
+`,
+
+`create or replace TRIGGER DeleteKulcsszo
+INSTEAD OF DELETE ON CikkazonEsKulcsszo
+FOR EACH ROW
+DECLARE
+    v_kulcsszoazon Kulcsszo.azon%TYPE;
+    v_kulcsszavak NUMBER;
+BEGIN
+    SELECT MIN(azon) INTO v_kulcsszoazon FROM Kulcsszo
+    WHERE kulcsszo LIKE :OLD.kulcsszo;
+    DELETE Kulcsszokapcsolat WHERE cikkazon = :OLD.azon
+    AND kulcsszoazon = v_kulcsszoazon;
+    SELECT COUNT(cikkazon) INTO v_kulcsszavak FROM Kulcsszokapcsolat
+    WHERE kulcsszoazon = v_kulcsszoazon;
+    IF (v_kulcsszavak <= 1) THEN
+        DELETE Kulcsszo WHERE kulcsszo LIKE :OLD.kulcsszo;
+    END IF;    
+END;
+`,
+
 ];
 module.exports = script;

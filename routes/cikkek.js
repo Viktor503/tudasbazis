@@ -24,6 +24,7 @@ router.get('/uj', async (req, res) => {
 router.post('/uj', async (req, res) => {
     const cikk = new CikkDAO(req.conn);
     const nyelv = new NyelvDAO(req.conn);
+    const kulcsszodao = new KulcsszoDAO(req.conn);
     const nyelvek = await nyelv.getAll();
 
     const kulcsszo = new KulcsszoDAO(req.conn);
@@ -36,8 +37,32 @@ router.post('/uj', async (req, res) => {
         res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "A cikknek legalább 20 karakter hosszúnak kell lennie"});
         return;
     }
+    let editKulcsszavak = req.body.kulcsszavak
+    if(!editKulcsszavak && req.body.ujkulcsszo == ''){
+        res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "Legalább egy kulcsszót meg kell adni"});
+        return;
+    }
 
-    await cikk.insertCikk(req.body.cim, req.user.azon, req.body.szoveg);
+
+    console.log(req.body)
+    
+    ujkulcsszo = req.body.ujkulcsszo
+    if(!editKulcsszavak){
+        editKulcsszavak = []
+    }
+    if(ujkulcsszo != ''){
+        editKulcsszavak.push('0')
+    }
+    let cikkid = await cikk.insertCikkReturnId(req.body.cim, req.user.azon, req.body.szoveg);
+    editKulcsszavak.forEach(async element => {
+       
+       if(element == '0'){
+           let kulcsszoazon = await kulcsszodao.insertKulcsszoreturnId(ujkulcsszo);
+           await kulcsszodao.insertKulcsszokapcsolat(cikkid, kulcsszoazon);
+       }else{
+            await kulcsszodao.insertKulcsszokapcsolat(cikkid, element);
+       }
+    });
     res.redirect("/cikkek");
 });
 
@@ -89,11 +114,32 @@ router.get('/:azon/edit', async (req, res) => {
 router.post('/:azon/edit', async (req, res) => {
     const cikkek = new CikkDAO(req.conn);
     const regiCikk = await cikkek.getByAzon(req.params.azon);
-    console.log(req.body)
+    const kulcsszoDAO = new KulcsszoDAO(req.conn);
+    const regiKulcsszavak = await cikkek.getKulcsszavak(req.params.azon);
+    // const ujKulcsszoObjektumok = req.body.kulcsszavak;
+    // console.log(typeof ujKulcsszoObjektumok, ujKulcsszoObjektumok);
+    // let ujKulcsszavak = [];
+    // ujKulcsszoObjektumok.forEach(element => {
+    //     ujKulcsszavak.push(element.KULCSSZO);
+    // });
+    // console.log(ujKulcsszavak);
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
+    //     ujKulcsszavak.forEach(async element => {
+    //         if(!regiKulcsszavak.includes(element)){
+    //             console.log(req.body.azon, element);
+    //             await kulcsszoDAO.addKulcsszoToCikk(req.body.azon, element);
+    //         }
+    //     });
+    //     regiKulcsszavak.forEach(async element => {
+    //         if(!ujKulcsszavak.includes(element.KULCSSZO)){
+    //             await kulcsszoDAO.deleteKulcsszoFromCikk(req.body.azon, element);
+    //         }
+
+    //     console.log(await cikkek.getKulcsszavak(req.params.azon));
+    //     });
         // TODO: triggerrel növelni a módosítások számát
-        res.redirect("/cikkek");
+        res.redirect("/cikkek/" + req.body.azon);
         return;
     }
     res.sendStatus(403);

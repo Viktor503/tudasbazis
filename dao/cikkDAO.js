@@ -199,6 +199,37 @@ class CikkDAO {
     });
   }
 
+    async insertCikkReturnId(
+        cim,
+        szerzoAzon,
+        tartalom
+    ){
+        const id = await this.connection.returnOutBinds(
+            `INSERT INTO cikk (cim, szerzoAzon, tartalom) VALUES (:cim, :szerzoAzon, to_clob(:tartalom)) RETURNING azon INTO :azon`,
+            {
+                cim: { val: String(cim), dir: oracledb.BIND_IN, type: oracledb.STRING },
+                szerzoAzon: {
+                    val: Number(szerzoAzon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+                tartalom: {
+                    val: String(tartalom),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.STRING,
+                },
+                azon: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
+            });
+            console.log(id['azon'][0]);
+        return id['azon'][0];
+    }
+
+    async deleteCikk(azon) {
+        await this.connection.returnNone(`DELETE FROM cikk WHERE azon = :azon`, {
+            azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
+        });
+    }
+
   async updateCikk(azon, cim, tartalom) {
     await this.connection.returnNone(
       `UPDATE cikk SET cim = :cim, tartalom = to_clob(:tartalom) WHERE azon = :azon`,

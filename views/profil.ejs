@@ -22,7 +22,7 @@
         </div>
     </form>
     <% } %>
-    <% if (user.admin || user.nev == felhasznalo.NEV) { %>
+    <% if (user.admin) { %>
         <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateAdminLektor">
             <input type="hidden" name="azon" id="azon" value="<%= felhasznalo.LEKTORAZON %>">
         <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
@@ -72,8 +72,14 @@
         <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateLektor">
         <div class="bg-gray-200 p-4 rounded-lg mb-10">
             <p class="text-3xl text-center justify-center items-center text-black p-4">Lektori adatok</p>
-            <label for="fokozat">Fokozat: </label>
-            <input type="text" id="fokozat" name="fokozat" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<%= lektor.FOKOZAT %>"><br>
+            <label class="block text-gray-700 text-sm font-bold mb-2" for="fokozat">
+                Fokozat:
+                <select id="fokozat" name="fokozat">
+                    <option value="BSc" <% if (lektor != undefined && lektor.FOKOZAT == 'BSc') {%> selected <% } %>>BSc</option>
+                    <option value="MSc" <% if (lektor != undefined && lektor.FOKOZAT == 'MSc') {%> selected <% } %>>MSc</option>
+                    <option value="PhD" <% if (lektor != undefined && lektor.FOKOZAT == 'PhD') {%> selected <% } %>>PhD</option>
+                </select>
+            </label>
             <label for="intezet">Intézet: </label>
             <input type="text" id="intezet" name="intezet" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" value="<%= lektor.INTEZET %>"><br>
             <label for="szakterulet">Szakterület: </label>

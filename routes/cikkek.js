@@ -4,6 +4,7 @@ const CikkDAO = require('../dao/cikkDAO');
 const NyelvDAO = require('../dao/nyelvDAO');
 const KulcsszoDAO = require('../dao/kulcsszoDAO');
 const FelhasznaloDAO = require('../dao/felhasznaloDAO');
+const LektorDAO = require('../dao/lektorDAO');
 
 router.get('/', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
@@ -48,6 +49,8 @@ router.get('/:azon', async (req, res) => {
     const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
+    const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
+
     if (!szerzo) {
         szerzo = "Ismeretlen";
     }
@@ -56,7 +59,7 @@ router.get('/:azon', async (req, res) => {
         return;
     }
     
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, hasonlo: hasonlocikkek});
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, hasonlo: hasonlocikkek, lektorNev});
 });
 
 router.get('/:azon/edit', async (req, res) => {
@@ -105,6 +108,28 @@ router.delete('/:azon', async (req, res) => {
         return;
     }
     res.sendStatus(403);
+});
+
+router.post('/:azon/lektorSend', async (req, res) => {
+    const cikkDAO = new CikkDAO(req.conn);
+    const cikk = await cikkDAO.getByAzon(req.params.azon);
+    if (cikk === undefined || !req?.user || req.user.azon !== cikk.SZERZOAZON) {
+        res.sendStatus(403);
+        return;
+    }
+    await cikkDAO.sendForLektor(req.params.azon);
+    res.sendStatus(200);
+});
+
+router.post('/:azon/finalize', async (req, res) => {
+    const cikkDAO = new CikkDAO(req.conn);
+    const cikk = await cikkDAO.getByAzon(req.params.azon);
+    if (cikk === undefined || !req?.user || req.user.lektorAzon !== cikk.LEKTORAZON) {
+        res.sendStatus(403);
+        return;
+    }
+    await cikkDAO.finalize(req.params.azon);
+    res.sendStatus(200);
 });
 
 module.exports = router;

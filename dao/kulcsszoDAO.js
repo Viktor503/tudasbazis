@@ -31,6 +31,7 @@ class KulcsszoDAO {
         {
             azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER }
         });
+        if(!kulcsszavak) return;
         if(kulcsszavak.length == 0) return;
         if(kulcsszavak.length == 1){kulcsszavak = [kulcsszavak];}
         kulcsszavak.forEach(async Element => {

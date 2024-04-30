@@ -22,9 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                <% 
-                    legutobbiCikkek.forEach(cikk => {
-                %>
+                <% legutobbiCikkek.forEach(cikk => { %>
                 <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
                     <td class="px-4 py-2">
                         <p><%= cikk.CIM %></p>
@@ -37,30 +35,60 @@
                     </td>
                 </tr>
                 <% }) %>
-
             </tbody>
         </table>
     </div>
-
-
-    <!-- <div>
-
-    <div class="flex justify-center items-center p-6">
-        <div class="bg-gray-200 p-4 rounded-lg">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/cikkek'">
-                Cikkek
-            </button>
-            <% if (user) { %>
-            <button class="bg-lime-500 hover:bg-lime-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/hibajelentesek'">
-                Hibajelentések
-            </button>
-            <% } %>
-            <% if (user !== undefined && user.admin) { %>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onclick="location.href='/admin'">
-                    Admin
-                </button>
-            <% } %>
+    <div class="flex flex-wrap justify-center items-start">
+        <div class="flex justify-center items-center p-6">
+            <div class="bg-gray-200 p-4 rounded-lg">
+                <h1 class="flex justify-center items-center text-2xl pb-4">Lektorjaink száma szakterületenként</h1>
+                <table>
+                    <thead>
+                        <th class="px-4 py-2 border bg-indigo-600 text-white">Szakterület</th>
+                        <th class="px-4 py-2 border bg-indigo-600 text-white">Lektorok száma</th>
+                    </thead>
+                    <tbody>
+                        <% szakteruletek.forEach(szakterulet => { %>
+                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center">
+                            <td class="px-4 py-2">
+                                <p><%= szakterulet.SZAKTERULET %></p>
+                            </td>
+                            <td class="px-4 py-2">
+                                <p><%= szakterulet.LEKTOROKSZAMA %></p>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div> -->
+        <div class="flex justify-center items-center p-6">
+            <div class="bg-gray-200 p-4 rounded-lg">
+                <h1 class="flex justify-center items-center text-2xl pb-4">Átlag felett módosított cikkjeink</h1>
+                <table>
+                    <thead>
+                        <th class="px-4 py-2 border bg-indigo-600 text-white">Szerző</th>
+                        <th class="px-4 py-2 border bg-indigo-600 text-white">Cím</th>
+                        <th class="px-4 py-2 border bg-indigo-600 text-white">Módosítások száma</th>
+                    </thead>
+                    <tbody>
+                        <% atlagModositasFelettiCikkek.forEach(cikk => { %>
+                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center cursor-pointer" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
+                            <td class="px-4 py-2">
+                                <p><%= cikk.SZERZONEV %></p>
+                            </td>
+                            <td class="px-4 py-2">
+                                <p><%= cikk.CIM %></p>
+                            </td>
+                            <td class="px-4 py-2">
+                                <p><%= cikk.MODOSITASOKSZAMA %></p>
+                            </td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

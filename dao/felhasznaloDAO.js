@@ -47,7 +47,7 @@ class FelhasznaloDAO {
 
   async getByLektorAzon(lektorAzon) {
     return await this.connection.returnOne(
-      `SELECT * FROM lektor WHERE azon = :lektorAzon`,
+      `SELECT * FROM felhasznalo WHERE lektorazon = :lektorAzon`,
       {
         lektorAzon: {
           val: Number(lektorAzon),

@@ -40,6 +40,21 @@ class LektorDAO{
     async updateLektor(azon, fokozat, intezet, szakterulet){
         await this.connection.returnNone(`UPDATE lektor SET fokozat = :fokozat, intezet = :intezet, szakterulet = :szakterulet WHERE azon = :azon`, {azon: {val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER}, fokozat: {val: String(fokozat), dir: oracledb.BIND_IN, type: oracledb.STRING}, intezet: {val: String(intezet), dir: oracledb.BIND_IN, type: oracledb.STRING}, szakterulet: {val: String(szakterulet), dir: oracledb.BIND_IN, type: oracledb.STRING}});
     }
+
+    async getSzakteruletAmount(){
+        return await this.connection.returnMore(
+        `SELECT L.szakterulet, COUNT(*) AS LektorokSzama
+        FROM Lektor L
+        GROUP BY L.szakterulet
+        ORDER BY LektorokSzama DESC`);
+    }
+
+    async getAllWithNev(){
+        return await this.connection.returnMore(
+        `SELECT L.azon, L.fokozat, L.intezet, L.szakterulet, F.nev
+        FROM Lektor L
+        JOIN Felhasznalo F ON L.azon = F.lektorazon`);
+    }
 }
 
 module.exports = LektorDAO;

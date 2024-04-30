@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="/css/style.css" />
+    <title><%= title %></title>
+</head>
+<body class="bg-indigo-500">
+    <%- include('header') %>
+    <div class="flex items-center justify-center pt-10">
+        <div class="w-full max-w-lg mx-auto">
+            <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <p class="text-center text-3xl font-bold p-3">Lektor hozzárendelése cikkhez</p>
+                <p class="text-center text-md p-3 text-red-600"><u class="text-lg">Figyelem!</u><br>Csak ahhoz a cikkhez lehet lektort rendelni, amit a cikk készítője beküldött lektorálásra!</p>
+                <form action="/admin/lektoradd" method="POST">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="cikk">
+                            Cikk:
+                        </label>
+                        <select id="cikk" name="cikk" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <% cikkek.forEach(cikk => { %>
+                            <option value="<%= cikk.AZON %>"><%= cikk.CIM %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="lektor">
+                            Lektor:
+                        </label>
+                        <select id="lektor" name="lektor" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                            <% lektorok.forEach(lektor => { %>
+                            <option value="<%= lektor.AZON %>"> <%= lektor.NEV %> (<%= lektor.SZAKTERULET %> <%= lektor.FOKOZAT %>, <%= lektor.INTEZET %>)</option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <input type="submit" value="Hozzárendelés" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

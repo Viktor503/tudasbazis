@@ -40,15 +40,23 @@
                             <% }) %>
                         </select>
                     </div>
-                    <div class="mb-6">
-                        <label class="block text-gray-700 text-sm font-bold mb-2" for="kulcsszavak">
-                            Kulcsszavak:
-                        </label>
-                        <select id="kulcsszavak" name="kulcsszavak" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" multiple>
-                            <% kulcsszavak.forEach(kulcsszo => { %>
-                            <option value="<%= kulcsszo.AZON %>"><%= kulcsszo.KULCSSZO %></option>
-                            <% }) %>
-                        </select>
+                    <div class="grid grid-row-3 grid-flow-col gap-4">
+                        <div class="mb-6 row-span-2">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="kulcsszavak">
+                                Kulcsszavak:
+                            </label>
+                            <select id="kulcsszavak" name="kulcsszavak" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" multiple>
+                                <% kulcsszavak.forEach(kulcsszo => { %>
+                                <option value="<%= kulcsszo.AZON %>"><%= kulcsszo.KULCSSZO %></option>
+                                <% }) %>
+                            </select>
+                        </div>
+                        <div class = "block row-span-1 ">
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="ujkulcsszo">
+                                Új kulcsszó:
+                            </label>
+                            <input type="text" id="ujkulcsszo" name="ujkulcsszo" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                        </div>
                     </div>
                     <div class="flex items-center justify-between">
                         <input type="submit" value="Beküldés" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">

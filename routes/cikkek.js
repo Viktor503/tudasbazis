@@ -23,6 +23,7 @@ router.get('/uj', async (req, res) => {
 router.post('/uj', async (req, res) => {
     const cikk = new CikkDAO(req.conn);
     const nyelv = new NyelvDAO(req.conn);
+    const kulcsszodao = new KulcsszoDAO(req.conn);
     const nyelvek = await nyelv.getAll();
 
     const kulcsszo = new KulcsszoDAO(req.conn);
@@ -35,8 +36,32 @@ router.post('/uj', async (req, res) => {
         res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "A cikknek legalább 20 karakter hosszúnak kell lennie"});
         return;
     }
+    let editKulcsszavak = req.body.kulcsszavak
+    if(!editKulcsszavak && req.body.ujkulcsszo == ''){
+        res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "Legalább egy kulcsszót meg kell adni"});
+        return;
+    }
 
-    await cikk.insertCikk(req.body.cim, req.user.azon, req.body.szoveg);
+
+    console.log(req.body)
+    
+    ujkulcsszo = req.body.ujkulcsszo
+    if(!editKulcsszavak){
+        editKulcsszavak = []
+    }
+    if(ujkulcsszo != ''){
+        editKulcsszavak.push('0')
+    }
+    let cikkid = await cikk.insertCikkReturnId(req.body.cim, req.user.azon, req.body.szoveg);
+    editKulcsszavak.forEach(async element => {
+       
+       if(element == '0'){
+           let kulcsszoazon = await kulcsszodao.insertKulcsszoreturnId(ujkulcsszo);
+           await kulcsszodao.insertKulcsszokapcsolat(cikkid, kulcsszoazon);
+       }else{
+            await kulcsszodao.insertKulcsszokapcsolat(cikkid, element);
+       }
+    });
     res.redirect("/cikkek");
 });
 

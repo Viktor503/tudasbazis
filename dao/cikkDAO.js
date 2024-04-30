@@ -42,10 +42,10 @@ class CikkDAO {
     async nyelvSzerint(){
         return await this.connection.returnMore(
             `
-            SELECT cikk.cim,COUNT(cikk.azon) AS nyelvszám 
+            SELECT cikk.cim,(COUNT(nyelvkapcsolat.eredeticikkazon)+1) AS nyelvszám 
             FROM cikk,nyelvkapcsolat 
-            WHERE(cikk.azon=nyelvkapcsolat.cikkazon) 
-            GROUP BY cikk.cim 
+            WHERE(cikk.azon=nyelvkapcsolat.eredeticikkazon) 
+            GROUP BY cikk.azon,cikk.cim
             ORDER BY nyelvszám DESC
             `
         );

@@ -71,9 +71,19 @@
                                     <%= element.CIM %>
                                 </a></div>
                             <% }); %>
+                <h1 class="text-2xl font-bold pb-3">Ez a cikk más nyelveken</h1>
+                <% if(ezmasnyelven.length==1){%>
+                    <p class="italic font-light pb-5">Ez a cikk csak ezen a nyelven van</p>
+                    <% } else {%>
+                        <% ezmasnyelven.forEach(element=> { %>
+                            <div class="py-2 hover:text-blue-400"><a href="<%= element.AZON%>">
+                                    <%= element.CIM %>
+                                </a></div>
+                            <% }); } %>
+                            
                                 <h1 class="text-xl font-bold pt-5">A cikk kulcsszavai:</h1>
                                 <% cikk.kulcsszavak.forEach(element=> { %>
-                                    <p class="italic font-light">#<%=element.KULCSSZO%>
+                                    <p class="italic font-light" onclick="">#<%=element.KULCSSZO%>
                                     </p>
                                     <% }); %>
             </div>

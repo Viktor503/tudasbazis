@@ -42,9 +42,6 @@ router.post('/uj', async (req, res) => {
         res.render('ujcikk', {"title": "Új cikk", nyelvek, kulcsszavak, user: req.user, "error": "Legalább egy kulcsszót meg kell adni"});
         return;
     }
-
-
-    console.log(req.body)
     
     ujkulcsszo = req.body.ujkulcsszo
     if(!editKulcsszavak){
@@ -73,6 +70,8 @@ router.get('/:azon', async (req, res) => {
     const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
     const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
+    const nyelv = new NyelvDAO(req.conn);
+    ezmasnyelven = await nyelv.getSameNyelvűCikkek(+req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 
@@ -84,7 +83,8 @@ router.get('/:azon', async (req, res) => {
         return;
     }
     
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, hasonlo: hasonlocikkek, lektorNev});
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, ezmasnyelven , hasonlo: hasonlocikkek, lektorNev});
+
 });
 
 router.get('/:azon/edit', async (req, res) => {
@@ -114,6 +114,7 @@ router.get('/:azon/edit', async (req, res) => {
 router.post('/:azon/edit', async (req, res) => {
     const cikkek = new CikkDAO(req.conn);
     const regiCikk = await cikkek.getByAzon(req.params.azon);
+
     const kulcsszoDAO = new KulcsszoDAO(req.conn);
     const regiKulcsszavak = await cikkek.getKulcsszavak(req.params.azon);
     // const ujKulcsszoObjektumok = req.body.kulcsszavak;
@@ -123,6 +124,7 @@ router.post('/:azon/edit', async (req, res) => {
     //     ujKulcsszavak.push(element.KULCSSZO);
     // });
     // console.log(ujKulcsszavak);
+
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
     //     ujKulcsszavak.forEach(async element => {

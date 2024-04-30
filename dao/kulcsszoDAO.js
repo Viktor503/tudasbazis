@@ -23,7 +23,7 @@ class KulcsszoDAO {
 
     async insertKulcsszoreturnId(kulcsszoNev) {
         let kulcsid = await this.connection.returnOutBinds(`INSERT INTO kulcsszo (kulcsszo) VALUES (:kulcsszoNev) RETURNING AZON INTO :azon`, { kulcsszoNev: { val: String(kulcsszoNev), dir: oracledb.BIND_IN, type: oracledb.STRING }, azon: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER }});
-        console.log(kulcsid);
+
         return kulcsid.azon[0];
     }
 

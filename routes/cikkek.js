@@ -51,6 +51,7 @@ router.post('/uj', async (req, res) => {
         editKulcsszavak.push('0')
     }
     let cikkid = await cikk.insertCikkReturnId(req.body.cim, req.user.azon, req.body.szoveg);
+    if(editKulcsszavak){
     editKulcsszavak.forEach(async element => {
        
        if(element == '0'){
@@ -60,6 +61,7 @@ router.post('/uj', async (req, res) => {
             await kulcsszodao.insertKulcsszokapcsolat(cikkid, element);
        }
     });
+    }
     res.redirect("/cikkek");
 });
 
@@ -68,10 +70,10 @@ router.get('/:azon', async (req, res) => {
     const cikk = await cikkDAO.getByAzon(req.params.azon);
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
     const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
-    const nyelvszerint = await cikkDAO.nyelvSzerint();
+    //const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     const nyelv = new NyelvDAO(req.conn);
-    ezmasnyelven = await nyelv.getSameNyelvűCikkek(+req.params.azon);
+    const ezmasnyelven = await nyelv.getSameNyelvuCikkek(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 
@@ -83,7 +85,7 @@ router.get('/:azon', async (req, res) => {
         return;
     }
     
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, ezmasnyelven , hasonlo: hasonlocikkek, lektorNev});
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, ezmasnyelven , hasonlocikkek, lektorNev});
 
 });
 
@@ -95,7 +97,7 @@ router.get('/:azon/edit', async (req, res) => {
         return;
     }
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
-    if (!req.user || (!req.user.admin && req.user.azon !== cikk.SZERZOAZON)) {
+    if (!req.user || (!req.user.admin && req.user.azon !== cikk.SZERZOAZON && (req.user.lektorAzon !== cikk.LEKTORAZON && cikk.ALLAPOT == 2))) {
         res.status(403).send('Hozzáférés megtagadva (Ki a f*szom az az Edit?)');
         return;
     }

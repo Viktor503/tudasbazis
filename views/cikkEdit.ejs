@@ -12,18 +12,18 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
-        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) { %>
+        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin || (user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2))) { %>
             <form method="post" action="/cikkek/<%- cikk.AZON %>/edit">
-                <div>
-                    <button class="bg-blue-500 hover:bg-blue-700 p-2 m-2 rounded" type="button"
-                        onclick="location.href='/cikkek/<%= cikk.AZON %>'">Vissza</button>
-                    <button class="bg-green-500 hover:bg-green-700 p-2 m-2 rounded" type="submit">Mentés</button>
-                </div>
                 <input type="hidden" name="azon" value="<%= cikk.AZON %>">
                 <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
                     <input type="text" id="cim" name="cim"
                         class="appearance-none text-5xl m-4 bg-transparent h-full w-full text-center focus:outline-none"
                         value="<%= cikk.CIM %>">
+                        <div>
+                            <button class="bg-blue-500 hover:bg-blue-700 p-2 m-2 rounded" type="button"
+                                onclick="location.href='/cikkek/<%= cikk.AZON %>'">Vissza</button>
+                            <button class="bg-green-500 hover:bg-green-700 p-2 m-2 rounded" type="submit">Mentés</button>
+                        </div>
                 </div>
 
                 <div class="flex items-stretch">

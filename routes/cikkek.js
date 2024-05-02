@@ -51,6 +51,7 @@ router.post('/uj', async (req, res) => {
         editKulcsszavak.push('0')
     }
     let cikkid = await cikk.insertCikkReturnId(req.body.cim, req.user.azon, req.body.szoveg);
+    if(editKulcsszavak){
     editKulcsszavak.forEach(async element => {
        
        if(element == '0'){
@@ -60,6 +61,7 @@ router.post('/uj', async (req, res) => {
             await kulcsszodao.insertKulcsszokapcsolat(cikkid, element);
        }
     });
+    }
     res.redirect("/cikkek");
 });
 
@@ -95,7 +97,7 @@ router.get('/:azon/edit', async (req, res) => {
         return;
     }
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
-    if (!req.user || (!req.user.admin && req.user.azon !== cikk.SZERZOAZON)) {
+    if (!req.user || (!req.user.admin && req.user.azon !== cikk.SZERZOAZON && (req.user.lektorAzon !== cikk.LEKTORAZON && cikk.ALLAPOT == 2))) {
         res.status(403).send('Hozzáférés megtagadva (Ki a f*szom az az Edit?)');
         return;
     }

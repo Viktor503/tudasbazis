@@ -265,9 +265,10 @@ router.post('/lektoradd', async (req, res) => {
         res.status(403).send('403 Forbidden');
         return;
     }
+    const cikkazon = req.body.cikk;
     const cikkdao = new cikkDAO(req.conn);
-    await cikkdao.updateLektor(Number(req.body.cikk), Number(req.body.lektor));
-    res.redirect("/cikkek/" + req.body.cikkazon);
+    await cikkdao.updateLektor(Number(cikkazon), Number(req.body.lektor));
+    res.redirect("/cikkek/" +cikkazon);
 });
 
 module.exports = router;

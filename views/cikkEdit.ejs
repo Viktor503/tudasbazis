@@ -12,7 +12,7 @@
 
 <body class="bg-indigo-500">
     <%- include('header') %>
-        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) { %>
+        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin || (user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2))) { %>
             <form method="post" action="/cikkek/<%- cikk.AZON %>/edit">
                 <input type="hidden" name="azon" value="<%= cikk.AZON %>">
                 <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">

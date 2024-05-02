@@ -29,22 +29,6 @@ class CikkDAO {
     );
   }
 
-  async getMoreByAzonok(azon) {
-    const inBindings = azon.map((val) => ({
-      val,
-      dir: oracledb.BIND_IN,
-      type: oracledb.NUMBER,
-    }));
-    const placeholders = azon.map((_, index) => `:azon${index + 1}`).join(", ");
-    const query = `SELECT * FROM cikk WHERE cikk.azon IN (${placeholders})`;
-    const bindParams = inBindings.reduce((params, binding, index) => {
-      params[`azon${index + 1}`] = binding;
-      return params;
-    }, {});
-    return await this.connection.returnMore(query, bindParams);
-  }
-
-
     async nyelvSzerint(){
         return await this.connection.returnMore(
             `
@@ -72,32 +56,27 @@ class CikkDAO {
     );
   }
 
-  async getHasonloAzon(id) {
-    const cursor = await this.connection.returnOutBinds(
+  async getHasonlo(id) {
+    let ret = await this.connection.returnOutBinds(
       `
-            BEGIN
-            :cursor := SUGGESTER(:id);
-            END;
-            `,
+        BEGIN
+        :cursor := SUGGESTER(:id);
+        END;
+      `,
       {
         id: { val: Number(id), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
         cursor: { type: oracledb.CURSOR, dir: oracledb.BIND_OUT },
       }
     );
-    const res = await cursor.cursor.getRows();
-    let res2 = [];
-    res.forEach((element) => {
-      res2.push(element.CIKKAZON);
-    });
-    return res2;
-  }
-  async getHasonlo(id) {
-    const res = await this.getMoreByAzonok(await this.getHasonloAzon(id));
-    if (res) {
-      return res;
-    } else {
+    const sorok = await ret.cursor.getRows();
+    let cikkek = [];
+    if (sorok.length === 0) {
       return [];
     }
+    sorok.forEach(async cikk => {
+      cikkek.push(await this.getByAzon(cikk.CIKKAZON));
+    });
+    return cikkek;
   }
 
   async getByCim(cim) {
@@ -222,12 +201,6 @@ class CikkDAO {
                 azon: { dir: oracledb.BIND_OUT, type: oracledb.NUMBER },
             });
         return id['azon'][0];
-    }
-
-    async deleteCikk(azon) {
-        await this.connection.returnNone(`DELETE FROM cikk WHERE azon = :azon`, {
-            azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER },
-        });
     }
 
   async updateCikk(azon, cim, tartalom) {

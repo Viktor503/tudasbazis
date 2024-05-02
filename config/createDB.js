@@ -327,7 +327,7 @@ SELECT Cikk.azon, Kulcsszo.kulcsszo
 FROM Cikk, Kulcsszo, Kulcsszokapcsolat
 WHERE Cikk.azon = Kulcsszokapcsolat.cikkazon
 AND Kulcsszo.azon = Kulcsszokapcsolat.kulcsszoazon
-ORDER BY Cikk.azon;
+ORDER BY Cikk.azon
 `,
 
 
@@ -345,7 +345,7 @@ BEGIN
     END IF;
     INSERT INTO Kulcsszokapcsolat (cikkazon, kulcsszoazon)
     VALUES (:NEW.azon, v_kulcsszoazon);    
-END;
+END AddKulcsszo;
 `,
 
 `create or replace TRIGGER DeleteKulcsszo
@@ -364,7 +364,7 @@ BEGIN
     IF (v_kulcsszavak <= 1) THEN
         DELETE Kulcsszo WHERE kulcsszo LIKE :OLD.kulcsszo;
     END IF;    
-END;
+END DeleteKulcsszo;
 `,
 
 ];

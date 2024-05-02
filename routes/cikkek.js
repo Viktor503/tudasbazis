@@ -68,10 +68,10 @@ router.get('/:azon', async (req, res) => {
     const cikk = await cikkDAO.getByAzon(req.params.azon);
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
     const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
-    const nyelvszerint = await cikkDAO.nyelvSzerint();
+    //const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     const nyelv = new NyelvDAO(req.conn);
-    ezmasnyelven = await nyelv.getSameNyelvűCikkek(+req.params.azon);
+    const ezmasnyelven = await nyelv.getSameNyelvuCikkek(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 
@@ -83,7 +83,7 @@ router.get('/:azon', async (req, res) => {
         return;
     }
     
-    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, ezmasnyelven , hasonlo: hasonlocikkek, lektorNev});
+    res.render('cikk', {"title": cikk.CIM, cikk, szerzo, user: req.user, ezmasnyelven , hasonlocikkek, lektorNev});
 
 });
 

@@ -136,7 +136,7 @@ router.post('/:azon/edit', async (req, res) => {
     // });
     // console.log(ujKulcsszavak);
 
-    if (req.    body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
+    if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
     //     ujKulcsszavak.forEach(async element => {
     //         if(!regiKulcsszavak.includes(element)){

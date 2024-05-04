@@ -61,6 +61,8 @@ router.post('/uj', async (req, res) => {
             await kulcsszodao.insertKulcsszokapcsolat(cikkid, element);
        }
     });
+
+    await nyelv.insertNyelvKapcsolat(cikkid, req.body.nyelv);
     }
     res.redirect("/cikkek");
 });
@@ -110,7 +112,13 @@ router.get('/:azon/edit', async (req, res) => {
     if (!szerzo) {
         szerzo = "Ismeretlen";
     }
-    res.render('cikkEdit', {"title": cikk.CIM, cikk, szerzo, user: req.user, kulcsszavak, hasonlo: hasonlocikkek});
+    nyelvdao = new NyelvDAO(req.conn);
+    cikk.nyelvkapcsolat = await nyelvdao.getNyelvkapcsolat(+req.params.azon);
+
+
+    eredeticikkek = await nyelvdao.getEredetiCikkek();
+
+    res.render('cikkEdit', {"title": cikk.CIM, cikk, szerzo, user: req.user, eredeticikkek, kulcsszavak, hasonlo: hasonlocikkek});
 });
 
 router.post('/:azon/edit', async (req, res) => {
@@ -118,6 +126,7 @@ router.post('/:azon/edit', async (req, res) => {
     const regiCikk = await cikkek.getByAzon(req.params.azon);
 
     const kulcsszoDAO = new KulcsszoDAO(req.conn);
+    const nyelvDAO = new NyelvDAO(req.conn);
     const regiKulcsszavak = await cikkek.getKulcsszavak(req.params.azon);
     // const ujKulcsszoObjektumok = req.body.kulcsszavak;
     // console.log(typeof ujKulcsszoObjektumok, ujKulcsszoObjektumok);
@@ -127,7 +136,7 @@ router.post('/:azon/edit', async (req, res) => {
     // });
     // console.log(ujKulcsszavak);
 
-    if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
+    if (req.    body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
     //     ujKulcsszavak.forEach(async element => {
     //         if(!regiKulcsszavak.includes(element)){
@@ -143,6 +152,11 @@ router.post('/:azon/edit', async (req, res) => {
     //     console.log(await cikkek.getKulcsszavak(req.params.azon));
     //     });
         // TODO: triggerrel növelni a módosítások számát
+        if(req.body.eredeti == 'false'){
+            if(req.body.eredeticikk){
+                await nyelvDAO.changeEredetiCikk(req.body.azon, req.body.eredeticikk);
+            }
+        }
         res.redirect("/cikkek/" + req.body.azon);
         return;
     }

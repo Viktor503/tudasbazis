@@ -49,8 +49,36 @@
                                 </option>
                                 <% }) %>
                         </select>
+                        <h1 class="text-2xl font-bold pb-3">Eredeti vagy fordítás?: </h1>
+                        <input type="radio" id="eredeti" name="eredeti" value="true" <% if (cikk.nyelvkapcsolat && cikk.nyelvkapcsolat.EREDETICIKKAZON == null) { %> checked="checked" <% } %> onclick="hideCikkek()">
+                        <label for="eredeti">Ez az eredeti cikk</label>
+                        <br>
+                        <input type="radio" id="eredeti" name="eredeti" value="false" <% if (cikk.nyelvkapcsolat && cikk.nyelvkapcsolat.EREDETICIKKAZON != null) { %> checked="checked" <% } %> onclick="showCikkek()" class="mb-4">
+                        <label for="eredeti">Ez egy fordítás</label>
+                        
+                        <div id="eredeticikkek" name="eredeticikkek" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" <%if (cikk.nyelvkapcsolat && cikk.nyelvkapcsolat.EREDETICIKKAZON == null){%> style="display: none;"<%}%>>
+                        <label class="block text-gray-200 text-sm font-bold mb-2" for="eredeticikk">
+                            Válaszd ki az eredeti cikket:</label>
+                        <select id="eredeticikk" name="eredeticikk" >
+                            <option value="" disabled selected hidden>Válassz egy cikket</option>
+                            <% eredeticikkek.forEach(cikk => { %>
+                            <option value="<%= cikk.AZON %>"><%= cikk.CIM %></option>
+                            <% }) %>
+                        </select>
+                    </div>
                     </div>
                 </div>
             </form>
             <% } %>
 </body>
+
+<script>
+function showCikkek() {
+  var text = document.getElementById("eredeticikkek");
+  text.style.display = "block";
+}
+function hideCikkek() {
+  var text = document.getElementById("eredeticikkek");
+  text.style.display = "none";
+}
+</script>

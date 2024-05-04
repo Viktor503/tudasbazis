@@ -62,8 +62,9 @@ router.post('/uj', async (req, res) => {
        }
     });
 
-    await nyelv.insertNyelvKapcsolat(cikkid, req.body.nyelv);
+    
     }
+    await nyelv.insertNyelvKapcsolat(cikkid, req.body.nyelv);
     res.redirect("/cikkek");
 });
 

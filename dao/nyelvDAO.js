@@ -42,6 +42,60 @@ class NyelvDAO {
             }
         );
     }
+
+    async getNyelvkapcsolat(azon) {
+        return await this.connection.returnOne(
+            `SELECT * FROM nyelvkapcsolat WHERE cikkazon = :azon`,
+            {
+                azon: {
+                    val: Number(azon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+            }
+        )
+    };
+    async insertNyelvKapcsolat(cikkazon, nyelvazon) {
+        await this.connection.returnNone(
+            `INSERT INTO nyelvkapcsolat (cikkazon, nyelvazon) VALUES (:cikkazon, :nyelvazon)`,
+            {
+                cikkazon: {
+                    val: Number(cikkazon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+                nyelvazon: {
+                    val: Number(nyelvazon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+            }
+            
+        );
+    }
+    async changeEredetiCikk(azon, eredeticikkazon) {
+        await this.connection.returnNone(
+            `UPDATE nyelvkapcsolat SET eredeticikkazon = :eredeticikkazon WHERE cikkazon = :azon`,
+            {
+                azon: {
+                    val: Number(azon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+                eredeticikkazon: {
+                    val: Number(eredeticikkazon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+            });
+    }
+
+    async getEredetiCikkek() {
+        return await this.connection.returnMore(
+            `SELECT * FROM nyelvkapcsolat,cikk 
+            WHERE nyelvkapcsolat.eredeticikkazon IS NULL and nyelvkapcsolat.cikkazon = cikk.azon
+            `,{});
+    }
 }
 
 module.exports = NyelvDAO;

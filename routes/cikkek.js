@@ -85,7 +85,7 @@ router.get('/:azon', async (req, res) => {
     //const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     const nyelv = new NyelvDAO(req.conn);
-    const ezmasnyelven = await nyelv.getSameNyelvuCikkek(req.params.azon);
+    const ezmasnyelven = await nyelv.getSameNemEredetiCikkek(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 

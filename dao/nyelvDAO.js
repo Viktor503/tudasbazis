@@ -25,13 +25,21 @@ class NyelvDAO {
         await this.connection.returnNone(`DELETE FROM nyelv WHERE azon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
     }
 
-    async getSameNyelvuCikkek(azon) {
+    async getSameNemEredetiCikkek(azon) {
         return await this.connection.returnMore(
             `
-            SELECT azon, cim
-            FROM Nyelvkapcsolat
-            JOIN Cikk ON Nyelvkapcsolat.cikkAzon = Cikk.azon
-            WHERE eredetiCikkAzon = :azon
+            SELECT azon, cim FROM (
+                (SELECT azon, cim
+                FROM Nyelvkapcsolat
+                JOIN Cikk ON Nyelvkapcsolat.cikkAzon = Cikk.azon
+                WHERE eredetiCikkAzon = :azon or cikkAzon = :azon)
+                UNION
+                (SELECT azon, cim
+                FROM Nyelvkapcsolat
+                JOIN Cikk ON nyelvkapcsolat.eredeticikkazon = Cikk.azon
+                WHERE eredetiCikkAzon = :azon or cikkAzon = :azon)
+                ) 
+                WHERE azon != :azon
             `,
             {
                 azon: {
@@ -95,6 +103,17 @@ class NyelvDAO {
             `SELECT * FROM nyelvkapcsolat,cikk 
             WHERE nyelvkapcsolat.eredeticikkazon IS NULL and nyelvkapcsolat.cikkazon = cikk.azon
             `,{});
+    }
+    async getEredetiCikk(azon){
+        return await this.connection.returnOne(
+            `SELECT * FROM CIKK WHERE AZON = (SELECT eredeticikkazon FROM nyelvkapcsolat WHERE cikkazon = :azon)`,
+            {
+                azon: {
+                    val: Number(azon),
+                    dir: oracledb.BIND_IN,
+                    type: oracledb.NUMBER,
+                },
+            });
     }
 }
 

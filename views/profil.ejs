@@ -9,7 +9,56 @@
 <body class="bg-indigo-500">
     <%- include('header') %>
 
-    <p class="text-3xl text-center justify-center items-center text-white p-4"><%= felhasznalo.NEV %> adatai</p>
+    <p class="text-3xl text-center justify-center items-center text-white p-4"><%= felhasznalo.NEV %> profilja</p>
+
+    <% if (cikkek && cikkek.length !== 0) { %>
+    <div class="flex justify-center items-center p-6">
+        <div class="bg-gray-200 p-4 rounded-lg">
+            <% if (user?.nev == felhasznalo.NEV) { %>
+                <h1 class="flex justify-center items-center text-2xl pb-4">Saját cikkjeid</h1>
+            <% } else { %>
+                <h1 class="flex justify-center items-center text-2xl pb-4"><%= felhasznalo.NEV %> cikkjei</h1>
+            <% } %>
+            <table>
+                <thead>
+                    <th class="px-4 py-2 border bg-indigo-600 text-white">Cím</th>
+                    <th class="px-4 py-2 border bg-indigo-600 text-white">Állapot</th>
+                </thead>
+                <tbody>
+                    <% cikkek.forEach(cikk => { %>
+                    <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center">
+                        <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
+                            <p><%= cikk.CIM %></p>
+                        </td>
+                        <td class="px-4 py-2">
+                            <% let allapot; %>
+                            <% switch (cikk.ALLAPOT) {
+                                case 0:
+                                    allapot = "Szerkesztés alatt";
+                                    break;
+                                case 1:
+                                    allapot = "Lektorálásra vár";
+                                    break;
+                                case 2:
+                                    allapot = "Lektorálás alatt";
+                                    break;
+                                case 3:
+                                    allapot = "Publikálva";
+                                    break;
+                                default:
+                                    allapot = "Ismeretlen";
+                                    break;
+                            } %>
+                            <p><%= allapot %></p>
+                        </td>    
+                    </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <% } %>
+
     <div class="flex flex-col justify-center items-center p-6 mx-auto">
         <% if (user?.nev == felhasznalo.NEV) {%>
         <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateFelhasznalo">
@@ -22,6 +71,7 @@
         </div>
     </form>
     <% } %>
+
     <% if (user?.admin) { %>
         <form method="post" action="/profil/<%= felhasznalo.NEV%>/updateAdminLektor">
             <input type="hidden" name="azon" id="azon" value="<%= felhasznalo.LEKTORAZON %>">

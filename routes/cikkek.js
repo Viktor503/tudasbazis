@@ -128,31 +128,26 @@ router.post('/:azon/edit', async (req, res) => {
 
     const kulcsszoDAO = new KulcsszoDAO(req.conn);
     const nyelvDAO = new NyelvDAO(req.conn);
-    const regiKulcsszavak = await cikkek.getKulcsszavak(req.params.azon);
-    // const ujKulcsszoObjektumok = req.body.kulcsszavak;
-    // console.log(typeof ujKulcsszoObjektumok, ujKulcsszoObjektumok);
-    // let ujKulcsszavak = [];
-    // ujKulcsszoObjektumok.forEach(element => {
-    //     ujKulcsszavak.push(element.KULCSSZO);
-    // });
-    // console.log(ujKulcsszavak);
+    const regiKulcsszoObjektumok = await cikkek.getKulcsszavak(req.params.azon);
+    let regiKulcsszavak = [];
+    regiKulcsszoObjektumok.forEach(element => {
+        regiKulcsszavak.push(element.KULCSSZO);
+    });
+
+    const ujKulcsszavak = [].concat(req.body.kulcsszavak);
 
     if (req.body.azon && req.body.cim && req.body.tartalom && req.user && (req.user.azon === regiCikk.SZERZOAZON || req.user.admin)) {
         await cikkek.updateCikk(req.body.azon, req.body.cim, req.body.tartalom);
-    //     ujKulcsszavak.forEach(async element => {
-    //         if(!regiKulcsszavak.includes(element)){
-    //             console.log(req.body.azon, element);
-    //             await kulcsszoDAO.addKulcsszoToCikk(req.body.azon, element);
-    //         }
-    //     });
-    //     regiKulcsszavak.forEach(async element => {
-    //         if(!ujKulcsszavak.includes(element.KULCSSZO)){
-    //             await kulcsszoDAO.deleteKulcsszoFromCikk(req.body.azon, element);
-    //         }
-
-    //     console.log(await cikkek.getKulcsszavak(req.params.azon));
-    //     });
-        // TODO: triggerrel növelni a módosítások számát
+        ujKulcsszavak.forEach(async element => {
+            if(!regiKulcsszavak.includes(element)){
+                await kulcsszoDAO.addKulcsszoToCikk(req.body.azon, element);
+            }
+        });
+        regiKulcsszavak.forEach(async element => {
+            if(!ujKulcsszavak.includes(element.KULCSSZO)){
+                await kulcsszoDAO.deleteKulcsszoFromCikk(req.body.azon, element);
+            }
+        });
         if(req.body.eredeti == 'false'){
             if(req.body.eredeticikk){
                 await nyelvDAO.changeEredetiCikk(req.body.azon, req.body.eredeticikk);

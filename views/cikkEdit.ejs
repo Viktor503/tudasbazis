@@ -14,6 +14,12 @@
     <%- include('header') %>
         <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin || (user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2))) { %>
             <form method="post" action="/cikkek/<%- cikk.AZON %>/edit">
+                <% if (hibajelentes !== undefined) { %>
+                    <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-red-400">
+                        <p class="text-xl"><%= hibajelentes.TARTALOM %></p>
+                    </div>
+                    <input type="hidden" name="hibajelentesAzon" value="<%= hibajelentes.AZON %>">
+                <% } %>
                 <input type="hidden" name="azon" value="<%= cikk.AZON %>">
                 <div class="flex justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
                     <input type="text" id="cim" name="cim"

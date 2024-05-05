@@ -9,7 +9,7 @@ const hibajelentesDAO = require('../dao/hibajelentesDAO');
 
 router.get('/', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
 
 router.get('/cikkek', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const cikk = new cikkDAO(req.conn);
@@ -76,7 +76,7 @@ router.post('/cikkek/update/:azon', async (req, res) => {
 
 router.get('/cikkeke', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const cikk = new cikkDAO(req.conn);
@@ -86,7 +86,7 @@ router.get('/cikkeke', async (req, res) => {
 
 router.get('/felhasznalok', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
@@ -96,7 +96,7 @@ router.get('/felhasznalok', async (req, res) => {
 
 router.get('/felhasznaloke', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
@@ -106,7 +106,7 @@ router.get('/felhasznaloke', async (req, res) => {
 
 router.get('/felhasznaloke/:azon', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const felhasznalo = new felhasznaloDAO(req.conn);
@@ -146,7 +146,7 @@ router.post('/felhasznaloke/:azon', async (req, res) => {
 
 router.get('/kulcsszavak', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const kulcsszo = new kulcsszoDAO(req.conn);
@@ -156,7 +156,7 @@ router.get('/kulcsszavak', async (req, res) => {
 
 router.get('/kulcsszavake', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const kulcsszo = new kulcsszoDAO(req.conn);
@@ -166,7 +166,7 @@ router.get('/kulcsszavake', async (req, res) => {
 
 router.get('/lektorok', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const lektor = new lektorDAO(req.conn);
@@ -176,7 +176,7 @@ router.get('/lektorok', async (req, res) => {
 
 router.get('/lektoroke', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const lektor = new lektorDAO(req.conn);
@@ -186,7 +186,7 @@ router.get('/lektoroke', async (req, res) => {
 
 router.get('/nyelvek', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const nyelv = new nyelvDAO(req.conn);
@@ -196,7 +196,7 @@ router.get('/nyelvek', async (req, res) => {
 
 router.get('/nyelveke', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const nyelv = new nyelvDAO(req.conn);
@@ -206,7 +206,7 @@ router.get('/nyelveke', async (req, res) => {
 
 router.get('/hibajelentesek', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const hibajelentes = new hibajelentesDAO(req.conn);
@@ -229,7 +229,7 @@ router.get('/hibajelentesek/:azon', async (req, res) => {
 
 router.get('/hibajelenteseke', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const hibajelentes = new hibajelentesDAO(req.conn);
@@ -240,7 +240,7 @@ router.get('/hibajelenteseke', async (req, res) => {
 
 router.get('/reset', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     req.conn.createDatabase();
@@ -250,7 +250,7 @@ router.get('/reset', async (req, res) => {
 
 router.get('/lektoradd', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const lektordao = new lektorDAO(req.conn);
@@ -262,7 +262,7 @@ router.get('/lektoradd', async (req, res) => {
 
 router.post('/lektoradd', async (req, res) => {
     if (!req.user?.admin) {
-        res.status(403).send('403 Forbidden');
+        res.sendStatus(403);
         return;
     }
     const cikkazon = req.body.cikk;

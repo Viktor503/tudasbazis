@@ -39,26 +39,28 @@
                     Cikk állapota: <%= allapot  %>
                 </p>
             <% } %>
-            <% if (user !==undefined && user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2) { %>
-                <button class="bg-indigo-500 hover:bg-indigo-600 p-2 m-2 rounded"
-                    onclick="finalizeCikk('<%= cikk.AZON %>')">Cikk véglegesítése</button>
-            <% } %>
-            <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || (user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2) || user.admin)) {%>
-                <button class="bg-green-500 hover:bg-green-600 p-2 m-2 rounded"
-                    onclick="location.href='/cikkek/<%= cikk.AZON %>/edit'">Szerkesztés</button>
-            <% } %>
-            <% if (user !==undefined && user.azon===cikk.SZERZOAZON && cikk.ALLAPOT == 0) { %>
-                <button class="bg-blue-500 hover:bg-blue-600 p-2 m-2 rounded"
-                    onclick="sendForLektor('<%= cikk.AZON %>')">Lektorálásra küldés</button>
-            <% } %>
-            <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) {%>
-                <button class="bg-red-500 hover:bg-red-600 p-2 m-2 rounded"
-                    onclick="deleteCikk('<%= cikk.AZON %>')">Törlés</button>
+            <%  if (user !== undefined) {
+                
+                const isUserLektor = user.lektorAzon === cikk.LEKTORAZON;
+                const isUserAuthor = user.azon === cikk.SZERZOAZON;
+                const isUserAdmin = user.admin;
+                const isDraft = cikk.ALLAPOT == 0;
+                const isWaitingForLektor = cikk.ALLAPOT == 2;
+
+                if ((isUserLektor || isUserAdmin) && isWaitingForLektor) { %>
+                <button class="bg-indigo-500 hover:bg-indigo-600 p-2 m-2 rounded" onclick="finalizeCikk('<%= cikk.AZON %>')">Cikk véglegesítése</button>
+            <%  } if ((isUserAuthor || isUserAdmin || isUserLektor)) { %>
+                <button class="bg-green-500 hover:bg-green-600 p-2 m-2 rounded" onclick="location.href='/cikkek/<%= cikk.AZON %>/edit'">Szerkesztés</button>
+            <%  }  if ((isUserAuthor || isUserAdmin) && isDraft) { %>
+                <button class="bg-blue-500 hover:bg-blue-600 p-2 m-2 rounded" onclick="sendForLektor('<%= cikk.AZON %>')">Lektorálásra küldés</button>
+            <%  } if (isUserAuthor || isUserAdmin) { %>
+                <button class="bg-red-500 hover:bg-red-600 p-2 m-2 rounded" onclick="deleteCikk('<%= cikk.AZON %>')">Törlés</button>
+            <%  }  %>
             <% } %>
         </div>
         <div class="grid grid-cols-7 gap-1">
             <div class="col-span-6 m-3 p-3 h-svh rounded flex flex-col bg-white">
-                <p id="tartalom" name="tartalom" class="appearance-none text-xl bg-transparent w-full focus:outline-none flex-grow overflow-scroll break-all"><%= cikk.TARTALOM %></p>
+                <p id="tartalom" name="tartalom" class="appearance-none text-xl bg-transparent w-full focus:outline-none flex-grow overflow-scroll break-words"><%= cikk.TARTALOM %></p>
             </div>
             <div class="col-span-1 p-3 m-3 h-svh rounded bg-emerald-700 text-stone-200">
                 <h1 class="text-2xl font-bold pb-3">Hasonló cikkek</h1>
@@ -88,7 +90,13 @@
                                     <% }); %>
             </div>
         </div>
-        <% if (user !==undefined && (user.azon===cikk.SZERZOAZON || user.admin)) { %>
+        <% if (user !== undefined) { %>
+            <% const isUserLektor = user.lektorAzon === cikk.LEKTORAZON;
+                const isUserAuthor = user.azon === cikk.SZERZOAZON;
+                const isUserAdmin = user.admin;
+                const isDraft = cikk.ALLAPOT == 0;
+                const isWaitingForLektor = cikk.ALLAPOT == 2; %>
+            <% if (isUserAuthor || isUserAdmin) { %>
             <script>
                 function deleteCikk(azon) {
                     fetch('/cikkek/' + azon, {
@@ -103,7 +111,7 @@
                 }
             </script>
         <% } %>
-            <% if (user !==undefined && user.azon===cikk.SZERZOAZON && cikk.ALLAPOT == 0) { %>
+            <% if ((isUserAuthor || isUserAdmin) && isDraft) { %>
             <script>
                 function sendForLektor(azon) {
                     fetch('/cikkek/' + azon + '/lektorSend', {
@@ -118,7 +126,7 @@
                 }
             </script>
             <% } %>
-            <% if (user !==undefined && user.lektorAzon===cikk.LEKTORAZON && cikk.ALLAPOT == 2) { %>
+            <% if ((isUserLektor || isUserAdmin) && isWaitingForLektor) { %>
             <script>
                 function finalizeCikk(azon) {
                 fetch('/cikkek/' + azon + '/finalize', {
@@ -133,6 +141,6 @@
             }
             </script>
             <% } %>
-
+            <% } %>
 
 </body>

@@ -48,7 +48,7 @@
                 <h1 class="flex justify-center items-center text-2xl pb-4">Felhasználók cikk nélkül</h1>
                 <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
                     <% felhasznalokCikkekNelkul.forEach(element => { %>
-                        <p class="text-center justify-center"><%= element.NEV %></p>
+                        <a class="text-center justify-center" href="/profil/<%= element.NEV %>"><%= element.NEV %></p>
                     <% }) %>
                 </div>
             </div>

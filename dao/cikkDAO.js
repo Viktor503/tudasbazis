@@ -9,6 +9,10 @@ class CikkDAO {
     return await this.connection.returnMore(`SELECT * FROM cikk`);
   }
 
+  async getAllWithSzerzo() {
+    return await this.connection.returnMore(`SELECT cikk.*, felhasznalo.nev AS szerzonev FROM cikk, felhasznalo WHERE cikk.szerzoazon = felhasznalo.azon`);
+  }
+
   async getLastThree() {
     return await this.connection
       .returnMore(`SELECT Cikk.azon, Cikk.cim, Cikk.tartalom, Felhasznalo.nev AS SZERZO

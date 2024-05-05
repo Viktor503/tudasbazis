@@ -8,7 +8,7 @@ const LektorDAO = require('../dao/lektorDAO');
 
 router.get('/', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
-    const cikkek = await cikkDAO.getAll();
+    const cikkek = await cikkDAO.getAllWithSzerzo();
     res.render('cikklista', {"title": "Cikkek", cikkek, user: req.user});
 });
 

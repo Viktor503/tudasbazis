@@ -82,16 +82,9 @@ router.get('/:azon', async (req, res) => {
     const cikk = await cikkDAO.getByAzon(req.params.azon);
     const felhasznaloDAO = new FelhasznaloDAO(req.conn);
     const hasonlocikkek = await cikkDAO.getHasonlo(req.params.azon);
-    //const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
-    const nyelvDAO = new NyelvDAO(req.conn);
-    const nyelvkapcsolat = await nyelvDAO.getNyelvkapcsolat(req.params.azon);
-    let ezmasnyelven = [];
-    if (nyelvkapcsolat.EREDETICIKKAZON == null) {
-        ezmasnyelven = await nyelvDAO.getSameNyelvuCikkek(req.params.azon);
-    } else {
-        ezmasnyelven = [].concat(await cikkDAO.getByAzon(nyelvkapcsolat.EREDETICIKKAZON), await nyelvDAO.getSameNyelvuCikkek(nyelvkapcsolat.EREDETICIKKAZON));
-    }
+    const nyelv = new NyelvDAO(req.conn);
+    const ezmasnyelven = await nyelv.getSameNemEredetiCikkek(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 

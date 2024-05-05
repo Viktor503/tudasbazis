@@ -25,10 +25,14 @@ class NyelvDAO {
         await this.connection.returnNone(`DELETE FROM nyelv WHERE azon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
     }
 
+    async getNyelvkapcsolat(azon) {
+        return await this.connection.returnOne(`SELECT * FROM nyelvkapcsolat WHERE cikkazon = :azon`, { azon: { val: Number(azon), dir: oracledb.BIND_IN, type: oracledb.NUMBER } });
+    }
+
     async getSameNyelvuCikkek(azon) {
         return await this.connection.returnMore(
             `
-            SELECT azon, cim
+            SELECT Cikk.*
             FROM Nyelvkapcsolat
             JOIN Cikk ON Nyelvkapcsolat.cikkAzon = Cikk.azon
             WHERE eredetiCikkAzon = :azon

@@ -5,10 +5,11 @@ const NyelvDAO = require('../dao/nyelvDAO');
 const KulcsszoDAO = require('../dao/kulcsszoDAO');
 const FelhasznaloDAO = require('../dao/felhasznaloDAO');
 const LektorDAO = require('../dao/lektorDAO');
+const HibajelentesDAO = require('../dao/hibajelentesDAO');
 
 router.get('/', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
-    const cikkek = await cikkDAO.getAll();
+    const cikkek = await cikkDAO.getAllWithSzerzo();
     res.render('cikklista', {"title": "Cikkek", cikkek, user: req.user});
 });
 
@@ -84,7 +85,7 @@ router.get('/:azon', async (req, res) => {
     //const nyelvszerint = await cikkDAO.nyelvSzerint();
     cikk.kulcsszavak = await cikkDAO.getKulcsszavak(req.params.azon);
     const nyelv = new NyelvDAO(req.conn);
-    const ezmasnyelven = await nyelv.getSameNyelvuCikkek(req.params.azon);
+    const ezmasnyelven = await nyelv.getSameNemEredetiCikkek(req.params.azon);
     let szerzo = (await felhasznaloDAO.getByAzon(cikk?.SZERZOAZON))?.NEV;
     const lektorNev = (await felhasznaloDAO.getByLektorAzon(cikk?.LEKTORAZON))?.NEV;
 
@@ -124,10 +125,12 @@ router.get('/:azon/edit', async (req, res) => {
     nyelvdao = new NyelvDAO(req.conn);
     cikk.nyelvkapcsolat = await nyelvdao.getNyelvkapcsolat(+req.params.azon);
 
-
     eredeticikkek = await nyelvdao.getEredetiCikkek();
 
-    res.render('cikkEdit', {"title": cikk.CIM, cikk, szerzo, user: req.user, eredeticikkek, kulcsszavak, hasonlo: hasonlocikkek});
+    const hibajelentesDAO = new HibajelentesDAO(req.conn);
+    const hibajelentes = await hibajelentesDAO.getByAzon(req.query.hiba);
+
+    res.render('cikkEdit', {"title": cikk.CIM, cikk, szerzo, user: req.user, eredeticikkek, kulcsszavak, hasonlo: hasonlocikkek, hibajelentes});
 });
 
 router.post('/:azon/edit', async (req, res) => {
@@ -136,6 +139,7 @@ router.post('/:azon/edit', async (req, res) => {
 
     const kulcsszoDAO = new KulcsszoDAO(req.conn);
     const nyelvDAO = new NyelvDAO(req.conn);
+    const hibajelentesDAO = new HibajelentesDAO(req.conn);
     const regiKulcsszoObjektumok = await cikkek.getKulcsszavak(req.params.azon);
     let regiKulcsszavak = [];
     regiKulcsszoObjektumok.forEach(element => {
@@ -161,6 +165,10 @@ router.post('/:azon/edit', async (req, res) => {
                 await nyelvDAO.changeEredetiCikk(req.body.azon, req.body.eredeticikk);
             }
         }
+        if (req.body.hibajelentesAzon !== undefined) {
+            hibajelentesDAO.deactivateHibajelentes(req.body.hibajelentesAzon);
+        }
+
         res.redirect("/cikkek/" + req.body.azon);
         return;
     }

@@ -115,6 +115,19 @@ class HibajelentesDAO {
       }
     );
   }
+  
+  async deactivateHibajelentes(azon) {
+    await this.connection.returnNone(
+      `UPDATE hibajelentes SET aktiv = 0 WHERE azon = :azon`,
+      {
+        azon: {
+          val: Number(azon),
+          dir: oracledb.BIND_IN,
+          type: oracledb.NUMBER,
+        },
+      }
+    );
+  }
 
 }
 

@@ -13,6 +13,9 @@
     <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-blue-400">
         <p class="text-5xl m-4"><%= title %></p><br>
         <p class="text-xl m-4"><%- hibajelentes.AKTIV ? "Hiba bejelentve: " + hibajelentes.DATUM : "A hibát már javították." %></p>
+        <% if (hibajelentes.AKTIV) { %>
+        <button class="bg-green-500 hover:bg-green-600 p-2 m-2 rounded" onclick="location.href='/cikkek/<%= hibajelentes.CIKKAZON %>/edit?hiba=<%= hibajelentes.AZON %>'">Szerkesztés</button>
+        <% } %>
     </div>
     <div class="justify-center p-5 mx-auto m-4 w-4/5 rounded text-center bg-red-400">
         <p class="text-xl"><%= hibajelentes.TARTALOM %></p>

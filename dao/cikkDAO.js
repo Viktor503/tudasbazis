@@ -89,8 +89,8 @@ class CikkDAO {
   }
 
   async getBySzerzoAzon(szerzoAzon) {
-    return await this.connection.returnOne(
-      `SELECT * FROM szerzo WHERE azon = :szerzoAzon`,
+    return await this.connection.returnMore(
+      `SELECT * FROM cikk WHERE szerzoAzon = :szerzoAzon`,
       {
         szerzoAzon: {
           val: Number(szerzoAzon),

@@ -1,6 +1,7 @@
 const express = require('express');
 const lektorDAO = require('../dao/lektorDAO');
 const felhasznaloDAO = require('../dao/felhasznaloDAO');
+const cikkDAO = require('../dao/cikkDAO');
 const router = express.Router();
   
 router.get('/', async (req, res) => {
@@ -23,7 +24,9 @@ router.get('/:nev', async (req, res) => {
     if(felhasznalo.LEKTORAZON){
         lektor = await lektorok.getByAzon(felhasznalo.LEKTORAZON);
     }
-    res.render('profil', {"title": felhasznalo.NEV + " adatai", user: req.user, felhasznalo, lektor, "error": null});
+    const cikkdao = new cikkDAO(req.conn);
+    const cikkek = await cikkdao.getBySzerzoAzon(felhasznalo.AZON);
+    res.render('profil', {"title": felhasznalo.NEV + " adatai", user: req.user, felhasznalo, lektor, cikkek, "error": null});
 });
 
 router.post('/:nev/updateFelhasznalo', async (req, res) => {

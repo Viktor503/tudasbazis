@@ -24,7 +24,7 @@ class HibajelentesDAO {
   }
 
   async getByBejelento(bejelento) {
-    return await this.connection.returnOne(
+    return await this.connection.returnMore(
       `SELECT * FROM felhasznalo WHERE azon = :bejelento`,
       {
         bejelento: {

@@ -72,11 +72,11 @@
                     </thead>
                     <tbody>
                         <% atlagModositasFelettiCikkek.forEach(cikk => { %>
-                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center cursor-pointer" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
-                            <td class="px-4 py-2">
+                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center">
+                            <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/profil/<%= cikk.SZERZONEV %>'">
                                 <p><%= cikk.SZERZONEV %></p>
                             </td>
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
                                 <p><%= cikk.CIM %></p>
                             </td>
                             <td class="px-4 py-2">
@@ -100,11 +100,11 @@
                     </thead>
                     <tbody>
                         <% legutobbiCikkek.forEach(cikk => { %>
-                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
-                            <td class="px-4 py-2">
+                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center">
+                            <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/profil/<%= cikk.SZERZO %>'">
                                 <p><%= cikk.SZERZO %></p>
                             </td>
-                            <td class="px-4 py-2">
+                            <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/cikkek/<%= cikk.AZON %>'">
                                 <p><%= cikk.CIM %></p>
                             </td>
                         </tr>
@@ -123,8 +123,8 @@
                     </thead>
                     <tbody>
                         <% nyelv.forEach(sor => {%>
-                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white cursor-pointer text-center" onclick="location.href='/cikkek/<%= sor.AZON %>'">
-                            <td class="px-4 py-2">
+                        <tr class="px-4 py-2 border bg-slate-500 hover:bg-slate-700 text-white text-center">
+                            <td class="px-4 py-2 hover:underline cursor-pointer" onclick="location.href='/cikkek/<%= sor.AZON %>'">
                                 <p><%= sor.CIM %></p>
                             </td>
                             <td class="px-4 py-2">

@@ -13,6 +13,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/uj', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const nyelv = new NyelvDAO(req.conn);
     const nyelvek = await nyelv.getAll();
 
@@ -22,6 +26,10 @@ router.get('/uj', async (req, res) => {
 });
 
 router.post('/uj', async (req, res) => {
+    if (!req.user) {
+        res.sendStatus(403);
+        return;
+    }
     const cikk = new CikkDAO(req.conn);
     const nyelv = new NyelvDAO(req.conn);
     const kulcsszodao = new KulcsszoDAO(req.conn);
@@ -167,7 +175,7 @@ router.post('/:azon/edit', async (req, res) => {
 router.delete('/:azon', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const torolni = await cikkDAO.getByAzon(req.params.azon);
-    if (torolni !== undefined && req.user && (req.user.azon === torolni.SZERZOAZON || req.user.admin)) {
+    if (torolni !== undefined && req.user && (req.user.azon === torolni.SZERZOAZON && !req.user.admin)) {
         await cikkDAO.deleteCikk(req.params.azon);
         res.sendStatus(200);
         return;
@@ -178,7 +186,7 @@ router.delete('/:azon', async (req, res) => {
 router.post('/:azon/lektorSend', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const cikk = await cikkDAO.getByAzon(req.params.azon);
-    if (cikk === undefined || !req?.user || req.user.azon !== cikk.SZERZOAZON) {
+    if (cikk === undefined || !req?.user || (req.user.azon !== cikk.SZERZOAZON && !req.user.admin)) {
         res.sendStatus(403);
         return;
     }
@@ -189,7 +197,7 @@ router.post('/:azon/lektorSend', async (req, res) => {
 router.post('/:azon/finalize', async (req, res) => {
     const cikkDAO = new CikkDAO(req.conn);
     const cikk = await cikkDAO.getByAzon(req.params.azon);
-    if (cikk === undefined || !req?.user || req.user.lektorAzon !== cikk.LEKTORAZON) {
+    if (cikk === undefined || !req?.user || (req.user.lektorAzon !== cikk.LEKTORAZON && !req.user.admin)) {
         res.sendStatus(403);
         return;
     }

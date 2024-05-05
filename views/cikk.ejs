@@ -67,7 +67,7 @@
             </div>
             <div class="col-span-1 p-3 m-3 h-svh rounded bg-emerald-700 text-stone-200">
                 <h1 class="text-2xl font-bold pb-3">Hasonló cikkek</h1>
-                <% if(!hasonlocikkek){%>
+                <% if(hasonlocikkek.length == 0){%>
                     <p class="italic font-light pb-5">Nincs hasonló cikk</p>
                     <% } else { %>
                     <% hasonlocikkek.forEach(element=> { %>
@@ -87,10 +87,14 @@
                             <% }); } %>
                             
                                 <h1 class="text-xl font-bold pt-5">A cikk kulcsszavai:</h1>
+                                <% if (cikk.kulcsszavak.length == 0) { %>
+                                    <p class="italic font-light">Nincsenek kulcsszavak</p>
+                                    <% } else { %>
                                 <% cikk.kulcsszavak.forEach(element=> { %>
                                     <p class="italic font-light">#<%=element.KULCSSZO%>
                                     </p>
                                     <% }); %>
+                                    <% } %>
             </div>
         </div>
         <% if (user !== undefined) { %>

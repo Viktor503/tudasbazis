@@ -28,17 +28,17 @@ class NyelvDAO {
     async getSameNemEredetiCikkek(azon) {
         return await this.connection.returnMore(
             `
-            SELECT azon, cim FROM (
+            SELECT * FROM(
+                SELECT azon, cim FROM (
                 (SELECT azon, cim
                 FROM Nyelvkapcsolat
                 JOIN Cikk ON Nyelvkapcsolat.cikkAzon = Cikk.azon
-                WHERE eredetiCikkAzon = :azon or cikkAzon = :azon)
+                WHERE eredetiCikkAzon = (SELECT eredeticikkazon from nyelvkapcsolat where cikkazon=:azon) or cikkAzon = (SELECT eredeticikkazon from nyelvkapcsolat where cikkazon=:azon))
                 UNION
-                (SELECT azon, cim
+                SELECT azon, cim
                 FROM Nyelvkapcsolat
-                JOIN Cikk ON nyelvkapcsolat.eredeticikkazon = Cikk.azon
-                WHERE eredetiCikkAzon = :azon or cikkAzon = :azon)
-                ) 
+                JOIN Cikk ON Nyelvkapcsolat.cikkAzon = Cikk.azon
+                WHERE eredetiCikkAzon = :azon or cikkAzon = :azon))
                 WHERE azon != :azon
             `,
             {

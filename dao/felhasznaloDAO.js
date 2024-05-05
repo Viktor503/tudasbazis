@@ -154,6 +154,17 @@ class FelhasznaloDAO {
     });
     return await ret.cursor.getRows();
   }
+
+  async getMostModifiedSzerzo() {
+    return await this.connection.returnOne(`
+    SELECT felhasznalo.nev, SUM(cikk.modositasokSzama) as modositasokSum
+    FROM cikk
+    JOIN felhasznalo ON cikk.szerzoazon = felhasznalo.azon
+    GROUP BY felhasznalo.nev
+    ORDER BY modositasokSum DESC
+    `);
+
+  }
 };
 
 module.exports = FelhasznaloDAO;
